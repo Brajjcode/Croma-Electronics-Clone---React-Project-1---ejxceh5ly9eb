@@ -1,0 +1,22 @@
+.container-slide{
+    margin: 2rem 5rem;
+    padding: 2rem 3rem;
+   
+
+}
+
+.card{
+    background-color: black;
+    color: white;
+}
+h2{
+    color: white;
+
+}
+.sliders{
+
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  
+}

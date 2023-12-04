@@ -1,0 +1,15 @@
+.card{
+    background-color: black;
+    color: white;
+}
+h2{
+    color: white;
+
+}
+.sliders{
+
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  
+}
