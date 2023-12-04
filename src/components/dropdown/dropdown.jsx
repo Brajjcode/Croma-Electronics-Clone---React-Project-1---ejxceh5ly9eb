@@ -5,6 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Link } from 'react-router-dom';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -12,7 +13,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 50,
     },
   },
 };
@@ -23,7 +24,7 @@ function getStyles(theme, name, personName) {
   };
 }
 
-const DynamicSelect = ({ apiEndpoint, projectId, onSelectCategory }) => {
+const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
   const theme = useTheme();
   const [options, setOptions] = React.useState([]);
   const [selectedOptions, setSelectedOptions] = React.useState([]);
@@ -43,6 +44,7 @@ const DynamicSelect = ({ apiEndpoint, projectId, onSelectCategory }) => {
         const categoryArray = Array.isArray(data) ? data : data.data || [];
 
         setOptions(categoryArray);
+        console.log("options" + options);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -69,6 +71,7 @@ const DynamicSelect = ({ apiEndpoint, projectId, onSelectCategory }) => {
           inputProps={{ 'aria-label': 'Without label' }}
         >
           {options.map((option) => (
+         <Link key ={option} to={`/dropdown/${option}`} >
             <MenuItem
               key={option}
               value={option}
@@ -76,6 +79,7 @@ const DynamicSelect = ({ apiEndpoint, projectId, onSelectCategory }) => {
             >
               {option}
             </MenuItem>
+            </Link>
           ))}
         </Select>
       </FormControl>
