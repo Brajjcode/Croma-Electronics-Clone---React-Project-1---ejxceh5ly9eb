@@ -43,8 +43,11 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
         // Check if the data is an array or an object with an array property
         const categoryArray = Array.isArray(data) ? data : data.data || [];
 
-        setOptions(categoryArray);
-        console.log("options" + options);
+        setOptions((prevOptions)=>{
+          console.log("options", prevOptions)
+          return categoryArray;
+        });
+        
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -71,15 +74,17 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
           inputProps={{ 'aria-label': 'Without label' }}
         >
           {options.map((option) => (
-         <Link key ={option} to={`/dropdown/${option}`} >
+         
             <MenuItem
               key={option}
               value={option}
               style={getStyles(theme, option, selectedOptions)}
+              component={Link}
+              to={`/dropdown/${option}`}  
             >
               {option}
             </MenuItem>
-            </Link>
+            
           ))}
         </Select>
       </FormControl>
