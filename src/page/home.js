@@ -19,7 +19,7 @@ import Slider from 'react-slick';
 import "./home.css"
 import DynamicSelect from '../components/dropdown/dropdown';
 import { useState,useEffect } from 'react'
-
+import { Link } from 'react-router-dom'
 
 
 
@@ -43,7 +43,7 @@ const  fetchProducts=async(url,setstate,page)=>{
    }
  });
  const data=await response.json();
-   //console.log(data);
+   console.log(data);
  setstate((prevData)=>[...prevData,...data.data]);
  
 };
@@ -140,8 +140,9 @@ var settings = {
         <div >
         <Slider {...settings}>
           {dealoftheday.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+     <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/></Link>
           ))}
+          
      </Slider>
         </div>
         
@@ -154,7 +155,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {trendingproducts.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+       <Link to={`/singleproduct/${product.id}`} >   <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>  
           ))}    
        </Slider>
         </div>
@@ -166,7 +167,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {television.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+        <Link to={`/singleproduct/${product.id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
           ))}    
        </Slider>
         </div>
@@ -178,7 +179,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {mobile.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+    <Link to={`/singleproduct/${product.id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
           ))}    
        </Slider>
         </div>
