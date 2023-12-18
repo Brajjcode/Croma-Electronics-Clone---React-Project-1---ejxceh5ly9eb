@@ -29,7 +29,7 @@ const Dropdownpage = () => {
          <div>
         <h2 className='text-2xl text-white'>{seletedterm} result</h2>
         
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2 items-center justify-center'>
        
           {categories.map((product)=>(
             <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>

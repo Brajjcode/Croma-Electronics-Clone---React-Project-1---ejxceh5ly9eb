@@ -14,7 +14,7 @@ export default function SelectSmall({onSelectedoption}) {
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">Price</InputLabel>
+      <InputLabel id="demo-select-small-label" className=' text-white'>Price</InputLabel>
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
@@ -25,9 +25,9 @@ export default function SelectSmall({onSelectedoption}) {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        <MenuItem value={"lowest"}>Price(Lowest First)</MenuItem>
-        <MenuItem value={"highest"}>Price(Highest First)</MenuItem>
-        <MenuItem value={"TopRated"}>Top Rated</MenuItem>
+        <MenuItem   value={"lowest"}>Price(Lowest First)</MenuItem>
+        <MenuItem   value={"highest"}>Price(Highest First)</MenuItem>
+        <MenuItem  value={"TopRated"}>Top Rated</MenuItem>
       </Select>
     </FormControl>
   );

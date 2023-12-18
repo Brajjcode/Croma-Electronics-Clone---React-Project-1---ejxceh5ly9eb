@@ -21,7 +21,7 @@ export default function Tags({onTagselect}) {
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">Tags</InputLabel>
+      <InputLabel id="demo-select-small-label" className=' text-white'>Tags</InputLabel>
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"

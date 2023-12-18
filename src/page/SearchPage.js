@@ -79,7 +79,7 @@ const SearchPage = () => {
         <div>
         <h2 className='text-2xl text-white'>{searchterm} result</h2>
         
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2 justify-center items-center'>
        
           {result.map((product)=>(
             <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>

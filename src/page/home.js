@@ -90,8 +90,8 @@ var settings = {
    {
      breakpoint: 683,
      settings: {
-       slidesToShow: 2,
-       slidesToScroll: 2,
+       slidesToShow: 1,
+       slidesToScroll: 1,
        initialSlide: 2
      }
    },
@@ -155,7 +155,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {trendingproducts.map((product)=>(
-       <Link to={`/singleproduct/${product.id}`} >   <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>  
+       <Link to={`/singleproduct/${product._id}`} >   <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>  
           ))}    
        </Slider>
         </div>
@@ -167,7 +167,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {television.map((product)=>(
-        <Link to={`/singleproduct/${product.id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
+        <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
           ))}    
        </Slider>
         </div>
@@ -179,7 +179,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {mobile.map((product)=>(
-    <Link to={`/singleproduct/${product.id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
+    <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
           ))}    
        </Slider>
         </div>

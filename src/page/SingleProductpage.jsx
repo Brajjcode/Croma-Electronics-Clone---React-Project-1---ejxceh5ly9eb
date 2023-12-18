@@ -9,10 +9,12 @@ const SingleProductpage = () => {
 
    const {id}= useParams();
    const[data,setdata]= useState([]);
-   //const [image,setImage]=useState('')
+   const [imageData,setImage]=useState('')
+   const [loader,setLoader]= useState(false)
 
    useEffect(()=>{
     const getData=async ()=>{
+      setLoader(true)
          const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/product/${id}`,{
             method: 'GET',
             headers:{
@@ -22,16 +24,60 @@ const SingleProductpage = () => {
          const Jsonresponse= await response.json();
          console.log(Jsonresponse);
          setdata(Jsonresponse.data);
+         setLoader(false)
     }
     getData();
    },[id])
+ 
+   const addproduct= async(prod)=>{
+      // const favoriteproduct= JSON.parse(localStorage.getItem("favoriteProduct"))||[]
+      // const isProductfavorite=favoriteproduct.find((favorite)=>{
+      //       return favorite.id===prod.id;
+      // })
+      //  if(isProductfavorite){
+      //    alert( 'item already exist in cart' )
+      //  }
+
+      //  else{
+      //    const updatedproduct=[...favoriteproduct,prod];
+      //    localStorage.setItem("favoriteProducts",JSON.stringify(updatedproduct))
+      //  }
+
+      const JwtToken= 'your jwt token';
+      const projectID='f104bi07c490';
+      try {
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/${prod.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+            'projectID': projectId,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            quantity: 1, // You can adjust the quantity as needed
+          }),
+        });
+  
+        if (response.ok) {
+          alert('Item added to the cart successfully');
+        } else {
+          alert('Failed to add item to the cart');
+        }
+      } catch (error) {
+        console.error('Error adding item to the cart:', error);
+      }
+   }
   return (
-    <>
+    <>{loader?(
+      <div className=' text-white'>Loading....</div>
+    ):(
+
+    
     <div className='container'>
     <div className="flex flex-row items-center justify-center p-40 gap-5">
     
       
-    <img src={data.displayImage}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96" alt="..."/>
+    <img src={imageData?imageData:data.displayImage}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96" alt="..."/>
     <div className="content text-white ">
         <h1 className=' font-semibold'>{data.name}</h1>
 
@@ -40,7 +86,7 @@ const SingleProductpage = () => {
 
          <ol className="border-2 border-slate-700 p-1">
          <h2 className=' p-1'> Key Features:</h2>
-         { data.features.map((item)=>(
+         {data.features && data.features.map((item)=>(
         
             <li>{item}</li>
         
@@ -49,17 +95,20 @@ const SingleProductpage = () => {
    </ol>
         <Stack direction="column" spacing={2} className=' p-4'>
          <Button variant="contained" color="success"> Buy Now </Button>
-         <Button variant="contained" color="success"> Add to cart </Button>
+         <Button variant="contained" color="success" onClick={()=>addproduct(data)}> Add to cart </Button>
          </Stack>
     </div>
      </div>
      <div className='flex flex-row items-center w-52 px-7'>
-        {data.images.map((image)=>(
-    <img src={image}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96 border-2 border-slate-700 p-1" alt="..."/>
+        {data.images && data.images.map((image)=>(
+    <img src={image}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96 border-2 border-slate-700 p-1"  onClick={()=>setImage(image)} alt="..."/>
        )) }
+       {/* <img src={data.displayImage}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96 border-2 border-slate-700 p-1"  onClick={()=>setImage(data.displayImage)} alt="..."/> */}
     </div>
 
     </div>
+    
+)}
     </>
   )
 }

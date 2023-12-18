@@ -17,23 +17,39 @@ export default function ImgMediaCard(props) {
           mode: 'dark',
         },
       });
+      // Helper function to truncate text to a specified number of words
+function truncateText(text, numWords) {
+  const words = text.split(' ');
+
+  // If the number of words is greater than the specified limit, truncate and append "..."
+  if (words.length > numWords) {
+    return words.slice(0, numWords).join(' ') + '...';
+  }
+
+  // If the number of words is within the limit, return the original text
+  return text;
+}
+
   return (
 
     <>
 <ThemeProvider theme={darkTheme}>
-    <Card sx={{ maxWidth: 345, maxHeight:400}} >
+    {/* <Card sx={{ maxWidth: 300, margin: 2, '@media (max-width:500px)': { maxWidth: '100%' } }} > */}
+    <Card sx={{ maxWidth: 300, margin: 2 }}>
+
       <CardMedia
        
         component="img"
         alt="green iguana"
         height="140"
-        sx={{height:200, maxWidth:400, margin:0.2}}
+        //sx={{maxheight:380, maxWidth:280, margin:0.2}}
+        sx={{ width: '100%', objectFit: 'cover' }}
         image={props.url}
 
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {props.name}
+        {truncateText(props.name, 6)}
         </Typography>
         <Typography variant="body2">
           {props.price}
