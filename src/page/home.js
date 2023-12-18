@@ -20,6 +20,7 @@ import "./home.css"
 import DynamicSelect from '../components/dropdown/dropdown';
 import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 
 
@@ -31,11 +32,16 @@ const Home = () => {
    const[mobile,setmobile]=useState([]);
    
 
-   
+      const location=useLocation();
+
+   console.log(location);
+
 
 
 
 const  fetchProducts=async(url,setstate,page)=>{
+
+
  const response=await fetch(`${url}&page=${page}`,{
    method:'GET',
    headers:{

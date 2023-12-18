@@ -62,9 +62,9 @@ export default function SignIn() {
     //   password: data.get('password'),
     // });
 
-   const storedUserdata= JSON.parse(localStorage.getItem('userInfo'))||{};
+   //const storedUserdata= JSON.parse(localStorage.getItem('userInfo'))||{};
 
-   if(event.currentTarget.email.value===storedUserdata.email && event.currentTarget.password.value===storedUserdata.password){
+   //if(event.currentTarget.email.value===storedUserdata.email && event.currentTarget.password.value===storedUserdata.password){
       try{
         const response = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
           method: 'POST',
@@ -84,16 +84,16 @@ export default function SignIn() {
           console.log("response data=>",responseData)
           localStorage.setItem('userToken', responseData.token);
           alert("logged in sucessfully");
-           navigate("/");
+           navigate("/", { state: { userloggedin: true } });
         }
       }
       catch(error){ 
              console.log(error);
       }
-    }
-    else{
-      alert("invalid username or password");
-    }
+   // }
+    // else{
+    //   alert("invalid username or password");
+    // }
 
   };
 

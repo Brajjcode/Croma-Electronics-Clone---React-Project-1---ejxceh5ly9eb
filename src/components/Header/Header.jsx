@@ -13,24 +13,30 @@ import { useState,useEffect } from 'react';
 import DynamicSelect from '../dropdown/dropdown';
 import { CiLogout } from "react-icons/ci";
 
+
 const Header = () => {
 
     const[ searchterm, setsearchterm]=useState('');
     const[categories,setcategory]= useState('');
-    //  const [logintext,setLogintext]= useState(<FaUser/>);
+     const [logintext,setLogintext]= useState(<FaUser/>);
+     const [shouldLogout, setShouldLogout] = useState(false);
+   //  const[isjwt,setjwt]= useState('')
 
-    //  const logout=()=>{
-    //   if(localStorage.getItem('token')){
-    //     localStorage.removeItem('token')
-    //     setLogintext(<FaUser/>)
-    //   }
-      
-    //  }
+     const logout=()=>{
+    
+        localStorage.removeItem('userToken')
+        setLogintext(<FaUser/>)
+        setShouldLogout(false);
+        alert("logged out successfully");
+     }
 
-    //  useEffect(()=>{
-    //   const token=localStorage.getItem('token');
-    //   setLogintext(token?<CiLogout/>:<FaUser/>)
-    //  })
+     useEffect(()=>{
+      const token=localStorage.getItem('userToken');
+
+      setLogintext(token?<CiLogout/>:<FaUser/>)
+      setShouldLogout(token ? true : false);
+     },[logintext])
+
     const handleCategorySelect = (category) => {
         // Implement your logic based on the selected category
         
@@ -79,9 +85,16 @@ const Header = () => {
           <p className='whitespace-nowrap text-sm'>Mumbai 400049</p>
           <IoPencil className='text-xs' />
       </div>
-      <div className=' text-2xl'>
-    <Link to={`/signin`}  ><FaUser/> </Link>
-      </div>
+      {/* <div className=' text-2xl' >
+       <Link to={`/signin`}  ><FaUser/></Link>
+      </div> */}
+      <div className='text-2xl'  onClick={() => shouldLogout? logout():undefined}>
+      {!shouldLogout ? (
+    <Link to="/signin">{logintext}</Link>
+  ) :(logintext)
+      }
+</div>
+
       <div className=' text-2xl relative'>
      <Link to={`/addtoCart`}  >  <FaShoppingBag />
           <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p></Link>
@@ -128,7 +141,7 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;
 
 
 
