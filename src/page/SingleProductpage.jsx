@@ -5,12 +5,14 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'react-router-dom';
 import { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 const SingleProductpage = () => {
 
    const {id}= useParams();
    const[data,setdata]= useState([]);
    const [imageData,setImage]=useState('')
    const [loader,setLoader]= useState(false)
+   const navigate= useNavigate();
 
    useEffect(()=>{
     const getData=async ()=>{
@@ -30,27 +32,22 @@ const SingleProductpage = () => {
    },[id])
  
    const addproduct= async(prod)=>{
-      // const favoriteproduct= JSON.parse(localStorage.getItem("favoriteProduct"))||[]
-      // const isProductfavorite=favoriteproduct.find((favorite)=>{
-      //       return favorite.id===prod.id;
-      // })
-      //  if(isProductfavorite){
-      //    alert( 'item already exist in cart' )
-      //  }
-
-      //  else{
-      //    const updatedproduct=[...favoriteproduct,prod];
-      //    localStorage.setItem("favoriteProducts",JSON.stringify(updatedproduct))
-      //  }
-
-      const JwtToken= 'your jwt token';
+    const jwtToken = localStorage.getItem('userToken');
+    
+       if(!jwtToken){
+             
+        navigate('/signin')
+        return;
+       }
+   //   const JwtToken= 'your jwt token';
+         console.log("productid=>",prod._id)
       const projectID='f104bi07c490';
       try {
-        const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/${prod.id}`, {
+        const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/${prod._id}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${jwtToken}`,
-            'projectID': projectId,
+            'projectID': projectID,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -66,6 +63,17 @@ const SingleProductpage = () => {
       } catch (error) {
         console.error('Error adding item to the cart:', error);
       }
+   }
+
+
+   const handlebuynow=()=>{
+    const jwtToken=localStorage.getItem('userToken');
+    if(!jwtToken){
+      navigate('/signin')
+      return;
+    }
+   
+   navigate('#')
    }
   return (
     <>{loader?(
@@ -94,7 +102,7 @@ const SingleProductpage = () => {
 ))}
    </ol>
         <Stack direction="column" spacing={2} className=' p-4'>
-         <Button variant="contained" color="success"> Buy Now </Button>
+         <Button variant="contained" color="success" onClick={()=>handlebuynow()}> Buy Now </Button>
          <Button variant="contained" color="success" onClick={()=>addproduct(data)}> Add to cart </Button>
          </Stack>
     </div>

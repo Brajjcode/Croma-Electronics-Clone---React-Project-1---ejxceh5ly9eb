@@ -35,7 +35,7 @@ const Header = () => {
 
       setLogintext(token?<CiLogout/>:<FaUser/>)
       setShouldLogout(token ? true : false);
-     },[logintext])
+     },[])
 
     const handleCategorySelect = (category) => {
         // Implement your logic based on the selected category

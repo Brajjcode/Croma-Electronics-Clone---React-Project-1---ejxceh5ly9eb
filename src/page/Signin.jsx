@@ -83,6 +83,7 @@ export default function SignIn() {
           const responseData= await response.json();
           console.log("response data=>",responseData)
           localStorage.setItem('userToken', responseData.token);
+          localStorage.setItem('userdata',JSON.stringify(responseData));
           alert("logged in sucessfully");
            navigate("/", { state: { userloggedin: true } });
         }
