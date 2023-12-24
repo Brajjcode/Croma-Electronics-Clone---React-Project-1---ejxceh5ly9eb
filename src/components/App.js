@@ -9,6 +9,9 @@ import SingleProductpage from "../page/SingleProductpage";
 import Addtocart from "../page/Addtocart";
 import SignIn from "../page/Signin";
 import SignUp from "../page/signup";
+import AddressForm from "../page/Checkoutpage/Addressform";
+import Checkout from "../page/Checkoutpage/CheckoutForm";
+import Review from "../page/Checkoutpage/Review";
 
   /* The following line can be included in your src/index.js or App.js file */
 
@@ -19,7 +22,7 @@ function App() {
     
    
 
-     <BrowserRouter>
+      <BrowserRouter>
       <Header/>
       <Routes>
     <Route path="/" element={<Home/>}/> 
@@ -29,8 +32,12 @@ function App() {
     <Route path = "/addtoCart" element={<Addtocart/>}/>
     <Route path="/signin" element={<SignIn/>}/>
     <Route path="/signup" element={<SignUp/>}/>
+     <Route path="/Addressform" element={<AddressForm/>}/>
+    <Route path="/Checkout" element={<Checkout/>}/>
+    <Route path="/Review" element={<Review/>}/> 
+
      </Routes>
-     </BrowserRouter>  
+     </BrowserRouter>   
      </>
      
   )

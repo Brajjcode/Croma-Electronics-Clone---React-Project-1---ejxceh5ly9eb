@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import DynamicSelect from '../dropdown/dropdown';
 import { CiLogout } from "react-icons/ci";
+import Box from '../Box/box';
 
 
 const Header = () => {
@@ -48,9 +49,11 @@ const Header = () => {
 
   return (
     <div>
+      
       <header className='bg-black text-white flex justify-between h-20 '>
   
   <div className='w-full m-auto max-w-[1200] px-2'>
+    <Box>
   <div className='hidden items-center justify-between w-full md:flex'>
   
   
@@ -100,8 +103,9 @@ const Header = () => {
           <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p></Link>
       </div>
   </div>
-  </div>
   
+  </div>
+  </Box>
   <div className="md:hidden">
                       <div className='flex justify-between'>
                           <div className='flex items-center gap-1'>

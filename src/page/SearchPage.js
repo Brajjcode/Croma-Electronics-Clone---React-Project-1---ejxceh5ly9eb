@@ -5,34 +5,58 @@ import { useEffect,useState } from 'react';
 import ImgMediaCard from '../components/imageurls/imagecard';
 import SelectSmall from '../components/dropdown/SearchDropdown';
 import Tags from '../components/dropdown/Tags';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 const SearchPage = () => {
 
     const {searchterm}= useParams();
      const [option,setOption]=useState('');
      const [tag,setTag]= useState('');
     const [result,setresult]=useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-  
+  //  const [currentPage, setCurrentPage] = useState(1);
+    const [Page, setPage] = useState(1);
+    const [isFetching, setIsFetching] = useState(true);
    
    useEffect(()=>{
      const getSearchResult= async()=>{
         //const filterQuery = `{"description":"${searchterm}"}`;
       const sortQuery = getSortQuery(option);
       const filterString = getFilterString(tag);
-        const response= await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?search={"description":"${searchterm}"}&${sortQuery}&${filterString}`,{
+      try{
+        const response= await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=10 &page=${Page}&search={"description":"${searchterm}"}&${sortQuery}&${filterString}`,{
             method:'GET',
            headers:{
        'projectID':'f104bi07c490'
               }
         })
-        const data=await response.json();
+        
+// setresult(data.data);
+if(response.ok){
+  const data=await response.json();
    console.log(data);
- setresult(data.data);
-     }
+ setresult((prevData)=>[...prevData,...data.data]);
+ setIsFetching(false);
+}
+else{
+  setIsFetching(false);
+          console.error('Failed to fetch data');
+}
 
+     }
+     catch(error){
+      setIsFetching(false);
+        console.error('Error:', error);
+
+     }
+    }
+    
      getSearchResult();
-   },[searchterm,option,tag])
+   },[searchterm,option,tag,Page])
+  
+
+  function viewMore(){
+    setPage(Page+1);
+  }
    
    const getFilterString=(tags)=>{
     
@@ -82,11 +106,13 @@ const SearchPage = () => {
         <div className='flex flex-wrap gap-2 justify-center items-center'>
        
           {result.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+        <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
           ))}
      
         </div>
-        
+        <div className=' flex items-center justify-center'>
+        <Button variant="outlined"onClick={()=>viewMore()}  disabled={isFetching}>View More</Button>
+        </div>
        
       </div>
    </>

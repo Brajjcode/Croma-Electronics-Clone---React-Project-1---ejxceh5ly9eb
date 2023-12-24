@@ -9,7 +9,8 @@ import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 import { useState,useEffect } from 'react'
 import { Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Checkout from './Checkoutpage/CheckoutForm';
 const Addtocart = () => {
     const [cartproducts,setcartproducts]=useState([]);
     const [total,setotal]=useState(0)
@@ -94,7 +95,7 @@ const Addtocart = () => {
           } 
           catch(error)
           {
-            Console.log("error removing items from cart",error)
+            console.log("error removing items from cart",error)
           }
         
         }
@@ -165,7 +166,7 @@ const Addtocart = () => {
 
         </Card.Text>
         <div className=' flex flex-row items-center gap-44 mt-7'>
-        <Button variant="primary">Checkout</Button>
+     <Link to={`/Checkout`}> <Button variant="primary">Checkout</Button></Link>
         <div className=' flex justify-around gap-2'>
           <span>Total:</span>
           <span>${totalaftershipping}</span>          

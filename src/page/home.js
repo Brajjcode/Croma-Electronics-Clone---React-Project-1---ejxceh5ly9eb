@@ -21,7 +21,14 @@ import DynamicSelect from '../components/dropdown/dropdown';
 import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
-
+import highlights1 from "../components/Assets/highlights1_720.png";
+import highlights2 from "../components/Assets/highlights2_720.png";
+import highlights3 from "../components/Assets/highlights3_720.png";
+import highlights4 from "../components/Assets/highlights4_720.png";
+import highlights5 from "../components/Assets/highlights5_720.png";
+import highlights6 from "../components/Assets/highlights6_720.png";
+import Loader from '../components/imageurls/Loader'
+//import  {Loader} from 'rsuite'
 
 
 const Home = () => {
@@ -30,6 +37,7 @@ const Home = () => {
    const[television,setTelevision]=useState([])
    
    const[mobile,setmobile]=useState([]);
+   const [cardLoader,setLoader]= useState(false);
    
 
       const location=useLocation();
@@ -41,7 +49,7 @@ const Home = () => {
 
 const  fetchProducts=async(url,setstate,page)=>{
 
-
+setLoader(true);
  const response=await fetch(`${url}&page=${page}`,{
    method:'GET',
    headers:{
@@ -51,7 +59,7 @@ const  fetchProducts=async(url,setstate,page)=>{
  const data=await response.json();
    console.log(data);
  setstate((prevData)=>[...prevData,...data.data]);
- 
+setLoader(false);
 };
 
 
@@ -59,12 +67,13 @@ const  fetchProducts=async(url,setstate,page)=>{
 
 
     const handleSearch = async () => {
+
   
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?sort={"price":-1}&sellerTag=best seller', setDealoftheday);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?sort={"rating":-1}&sellerTag=trending', setTrendingproducts);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?filter={"subCategory":"tv"}', setTelevision);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&sort={"price":-1}&sellerTag=best seller', setDealoftheday);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&sort={"rating":-1}&sellerTag=trending', setTrendingproducts);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&filter={"subCategory":"tv"}', setTelevision);
         // fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products', setcategory, pagecategories);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?filter={"subCategory":"mobile"}', setmobile);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&filter={"subCategory":"mobile"}', setmobile);
       
     };
 
@@ -137,27 +146,55 @@ var settings = {
 <Box>
 <section className="container">
   <div className='container-slide'>
+
   <div className='sliders'>
-   
+  <h2 className="font-medium text-2xl ">Highlights</h2>
+  <div className=' flex flex-col gap-1 '>
+        <div className=" justify-between gap-1 my-4 hidden md:flex">
+          <img src={highlights1} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights2} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights3} className="h-44 md:h-60 rounded-lg" />
+        </div>
+        <div className="justify-between gap-1 my-4 hidden md:flex">
+          <img src={highlights4} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights5} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights6} className="h-44 md:h-60 rounded-lg" />
+        </div>
+
+        <div className=' md:hidden'>
+          <Slider {...settings}>
+          <img src={highlights1} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights2} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights3} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights4} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights5} className="h-44 md:h-60 rounded-lg" />
+          <img src={highlights6} className="h-44 md:h-60 rounded-lg" />
+          
+          </Slider>
+        </div>
+   </div>
         
       <div>
-        <h2 className='text-2xl text-white'>Deal of the day</h2>
-        
-        <div >
-        <Slider {...settings}>
-          {dealoftheday.map((product)=>(
-     <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/></Link>
-          ))}
-          
-     </Slider>
-        </div>
+        <h2 className='font-medium text-2xl '>Deal of the day</h2>
+   
+    <div >
+    <Slider {...settings}>
+
+      {dealoftheday.map((product)=>(
+      
+ <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/></Link>
+         ))}
+      
+ </Slider>
+    </div>    
+       
         
        
       </div>
   
   
   <div >
-        <h2 className='text-2xl text-white'>Trending</h2>
+        <h2 className='font-medium text-2xl '>Trending</h2>
         <div>
           <Slider {...settings}>
           {trendingproducts.map((product)=>(
@@ -169,7 +206,7 @@ var settings = {
       </div>
   
       <div >
-        <h2 className='text-2xl text-white'>Televisions</h2>
+        <h2 className='font-medium text-2xl '>Televisions</h2>
         <div>
           <Slider {...settings}>
           {television.map((product)=>(
@@ -181,7 +218,7 @@ var settings = {
       </div>
   
       <div >
-        <h2 className='text-2xl text-white'>Mobiles</h2>
+        <h2 className='font-medium text-2xl '>Mobiles</h2>
         <div>
           <Slider {...settings}>
           {mobile.map((product)=>(

@@ -35,7 +35,7 @@ function truncateText(text, numWords) {
     <>
 <ThemeProvider theme={darkTheme}>
     {/* <Card sx={{ maxWidth: 300, margin: 2, '@media (max-width:500px)': { maxWidth: '100%' } }} > */}
-    <Card sx={{ maxWidth: 300, margin: 2 }}>
+    <Card sx={{ maxWidth: 300, margin: 2,maxHeight:380 }}>
 
       <CardMedia
        
@@ -43,14 +43,16 @@ function truncateText(text, numWords) {
         alt="green iguana"
         height="140"
         //sx={{maxheight:380, maxWidth:280, margin:0.2}}
-        sx={{ width: '100%', objectFit: 'cover' }}
+       sx={{ maxWidth: 250, objectFit: 'cover', alignItems:'center' }}
         image={props.url}
 
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <div className=' mb-6'>
+        <Typography gutterBottom variant="h6" component="div">
         {truncateText(props.name, 6)}
         </Typography>
+        </div>
         <Typography variant="body2">
           {props.price}
         </Typography>

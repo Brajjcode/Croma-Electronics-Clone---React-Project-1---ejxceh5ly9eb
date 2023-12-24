@@ -2,27 +2,50 @@ import React from 'react'
 import { useActionData, useParams } from 'react-router-dom'
 import { useState,useEffect } from 'react';
 import ImgMediaCard from '../components/imageurls/imagecard';
+import Button from '@mui/material/Button';
 const Dropdownpage = () => {
   
     const [categories,setCategoriesresult]= useState([])
   const {seletedterm}= useParams();
+  const [isFetching, setIsFetching] = useState(true);
+  const [Page, setPage] = useState(1);
   console.log(seletedterm)
   
  useEffect(()=>{
         const getCategories= async ()=>{
-            const responsecat = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?filter={"subCategory":"${seletedterm}"}`, {
+          try{
+            const responsecat = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=10 &page=${Page}&filter={"subCategory":"${seletedterm}"}`, {
                 method: 'GET',
                 headers: {
                'projectID': 'f104bi07c490'
                  }
                });
-            
-               const categoryData = await responsecat.json();
+            if(responsecat.ok){
+              const categoryData = await responsecat.json();
                console.log(categoryData)
-              setCategoriesresult(categoryData.data);
+               setCategoriesresult((prevData)=>[...prevData,...categoryData.data]);
+                 setIsFetching(false)
+            }
+               else{
+                setIsFetching(false);
+                console.error('Failed to fetch data');
+               }
+
         }
+        catch(error){
+          setIsFetching(false);
+        console.error('Error:', error);
+
+
+        }
+      }
      getCategories();
-    },[seletedterm])
+    },[seletedterm,Page])
+
+    function viewMore(){
+      setPage(Page+1);
+    }
+
   return (
     <div>
         hello
@@ -39,6 +62,9 @@ const Dropdownpage = () => {
         
        
       </div>  
+      <div className=' flex items-center justify-center'>
+        <Button variant="outlined"onClick={()=>viewMore()}  disabled={isFetching}>View More</Button>
+        </div>
     </div>
   )
 }

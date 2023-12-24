@@ -46,10 +46,12 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
 
         // Check if the data is an array or an object with an array property
         const categoryArray = Array.isArray(data) ? data : data.data || [];
+        //const uppercasedCategories = categoryArray.map(category => category.toUpperCase());
 
         setOptions((prevOptions)=>{
           console.log("options", prevOptions)
-          return categoryArray;
+         return categoryArray;
+         //return uppercasedCategories;
         });
         
       } catch (error) {
