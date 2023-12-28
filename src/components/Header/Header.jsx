@@ -100,7 +100,7 @@ const Header = () => {
 
       <div className=' text-2xl relative'>
      <Link to={`/addtoCart`}  >  <FaShoppingBag />
-          <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p></Link>
+          {/* <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p>*/}</Link> 
       </div>
   </div>
   
@@ -127,7 +127,7 @@ const Header = () => {
                               </div>
                               <div className=' text-xl relative'>
                                   <FaShoppingBag />
-                                  <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p>
+                                  {/* <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p> */}
                               </div>
                           </div>
                       </div>

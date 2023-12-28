@@ -33,6 +33,7 @@ function App() {
     <Route path="/signin" element={<SignIn/>}/>
     <Route path="/signup" element={<SignUp/>}/>
      <Route path="/Addressform" element={<AddressForm/>}/>
+    <Route path="/Checkout/:id" element={<Checkout/>}/>
     <Route path="/Checkout" element={<Checkout/>}/>
     <Route path="/Review" element={<Review/>}/> 
 

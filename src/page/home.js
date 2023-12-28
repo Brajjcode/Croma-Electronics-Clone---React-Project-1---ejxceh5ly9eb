@@ -182,7 +182,7 @@ var settings = {
 
       {dealoftheday.map((product)=>(
       
- <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/></Link>
+ <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price} ratings={product.ratings} /></Link>
          ))}
       
  </Slider>
@@ -198,7 +198,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {trendingproducts.map((product)=>(
-       <Link to={`/singleproduct/${product._id}`} >   <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>  
+       <Link to={`/singleproduct/${product._id}`} >   <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price} ratings={product.ratings}/> </Link>  
           ))}    
        </Slider>
         </div>
@@ -210,7 +210,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {television.map((product)=>(
-        <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
+        <Link to={`/singleproduct/${product._id}`} >  <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price} ratings={product.ratings}/> </Link>
           ))}    
        </Slider>
         </div>
@@ -222,7 +222,7 @@ var settings = {
         <div>
           <Slider {...settings}>
           {mobile.map((product)=>(
-    <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/> </Link>
+    <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price} ratings={product.ratings}/> </Link>
           ))}    
        </Slider>
         </div>

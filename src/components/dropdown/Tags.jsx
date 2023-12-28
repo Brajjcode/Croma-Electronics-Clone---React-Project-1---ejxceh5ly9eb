@@ -28,6 +28,7 @@ export default function Tags({onTagselect}) {
         value={age}
         label="Age"
         onChange={handleChange}
+        sx={{color:'white'}}
       >
         {Object.entries(mapSortValueToLabel).map(([value, label]) => (
             <MenuItem key={value} value={label}>

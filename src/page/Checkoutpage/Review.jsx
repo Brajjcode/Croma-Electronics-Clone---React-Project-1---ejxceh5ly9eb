@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { useState,useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 
 const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
@@ -20,28 +21,71 @@ export default function Review() {
     const [totalamount,setTotalamount]=useState(0);
  const token = localStorage.getItem('userToken');
  const address=  JSON.parse(localStorage.getItem('addressFormData'));
+ const cardetails= JSON.parse(localStorage.getItem(''))
+ const {id}= useParams();
  console.log("addressFirstname=>",address)
-    useEffect(() => {
-        // Define the API endpoint and headers
-        const apiUrl = 'https://academics.newtonschool.co/api/v1/ecommerce/cart';
-        const headers = {
-          Authorization: `Bearer ${token} `,
-          projectID: 'f104bi07c490',
-        };
+    // useEffect(() => {
+
+      
+    //     // Define the API endpoint and headers
+    //     const apiUrl = 'https://academics.newtonschool.co/api/v1/ecommerce/cart';
+    //     const headers = {
+    //       Authorization: `Bearer ${token} `,
+    //       projectID: 'f104bi07c490',
+    //     };
     
-        // Fetch data from the API
-        fetch(apiUrl, { headers })
-          .then((response) => response.json())
-          .then(({data}) => {
-            // Assuming the API response has a 'cartItems' property containing an array of items
-            const itemsArray = data && data.items ? data.items : [];
-            const total = itemsArray.reduce((acc, prod) => acc + prod.product.price, 0);   
-            setTotalamount(total);
-            setCartItems(itemsArray);
-          })
-          .catch((error) => console.error('Error fetching data:', error));
-      }, []);
-      console.log("cartItems in review",cartItems);
+    //     // Fetch data from the API
+    //     fetch(apiUrl, { headers })
+    //       .then((response) => response.json())
+    //       .then(({data}) => {
+    //         // Assuming the API response has a 'cartItems' property containing an array of items
+    //         const itemsArray = data && data.items ? data.items : [];
+    //         const total = itemsArray.reduce((acc, prod) => acc + prod.product.price, 0);   
+    //         setTotalamount(total);
+    //         setCartItems(itemsArray);
+    //       })
+    //       .catch((error) => console.error('Error fetching data:', error));
+    //   }, []);
+     // console.log("cartItems in review",cartItems);
+
+     useEffect(()=>{
+      const  fetchData= async()=>{
+
+        if(id){
+          //const productUrl=
+          const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/product/${id}`,{
+            method: 'GET',
+            headers:{
+                'projectID':'f104bi07c490'
+                       }
+         });
+         const productData = await response.json();
+
+        setTotalamount(productData.data.price);
+        setCartItems([{ product: productData.data }]);
+
+        }
+      else{
+        const cartUrl = 'https://academics.newtonschool.co/api/v1/ecommerce/cart';
+        const cartResponse = await fetch(cartUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            projectID: 'f104bi07c490',
+          },
+        });
+        const cartData = await cartResponse.json();
+
+        const itemsArray = cartData.data && cartData.data.items ? cartData.data.items : [];
+        const total = itemsArray.reduce((acc, prod) => acc + prod.product.price, 0);
+
+        setTotalamount(total);
+        setCartItems(itemsArray);
+
+      }
+
+      };
+      fetchData();
+     },[id,token]);
   
   return (
     <React.Fragment>
