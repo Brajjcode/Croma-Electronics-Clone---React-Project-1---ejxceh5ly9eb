@@ -179,7 +179,7 @@ const SingleProductpage = () => {
     
       
     <img src={imageData?imageData:data.displayImage}class=" rounded mx-auto d-block object-scale-down h-80 w-96" alt="..."/>
-    <div className="content text-white ">
+    <div className="content text-white "> 
         <h1 className=' font-semibold'>{data.name}</h1>
 
         <div className=' p-2'>Price: ₹{data.price}.00</div>
