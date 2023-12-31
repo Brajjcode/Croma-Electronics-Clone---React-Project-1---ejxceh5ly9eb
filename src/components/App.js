@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import "../styles/App.css";
-import { BrowserRouter,Routes,Route } from "react-router-dom";
+import { HashRouter,Routes,Route } from "react-router-dom";
 import Home from "../page/home";
 import SearchPage from "../page/SearchPage";
 import Dropdownpage from "../page/Dropdownpage"
@@ -22,7 +22,7 @@ function App() {
     
    
 
-      <BrowserRouter>
+      <HashRouter>
       <Header/>
       <Routes>
     <Route path="/" element={<Home/>}/> 
@@ -38,7 +38,7 @@ function App() {
     <Route path="/Review" element={<Review/>}/> 
 
      </Routes>
-     </BrowserRouter>   
+     </HashRouter>   
      </>
      
   )
