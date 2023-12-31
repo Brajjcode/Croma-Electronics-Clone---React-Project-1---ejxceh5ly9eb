@@ -3,12 +3,14 @@ import { useActionData, useParams } from 'react-router-dom'
 import { useState,useEffect } from 'react';
 import ImgMediaCard from '../components/imageurls/imagecard';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 const Dropdownpage = () => {
   
     const [categories,setCategoriesresult]= useState([])
   const {seletedterm}= useParams();
   const [isFetching, setIsFetching] = useState(true);
   const [Page, setPage] = useState(1);
+  
   console.log(seletedterm)
   
  useEffect(()=>{
@@ -50,12 +52,12 @@ const Dropdownpage = () => {
     <div>
         hello
          <div>
-        <h2 className='text-2xl text-white'>{seletedterm} result</h2>
+        <h2 className='font-medium text-2xl pl-5'>{seletedterm} result</h2>
         
         <div className='flex flex-wrap gap-2 items-center justify-center'>
        
           {categories.map((product)=>(
-            <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price}/>
+         <Link to={`/singleproduct/${product._id}`} > <ImgMediaCard key={product.id} url={product.displayImage} name={product.name} price={product.price} ratings={product.ratings}/></Link> 
           ))}
      
         </div>

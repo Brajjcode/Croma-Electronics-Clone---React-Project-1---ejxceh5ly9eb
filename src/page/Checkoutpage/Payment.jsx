@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useState,useEffect } from 'react';
 
-export default function PaymentForm() {
+export default function PaymentForm({ handleFormCompletion }) {
     const [formData, setFormData] = useState({
         cardName: '',
         cardNumber: '',
@@ -17,6 +17,7 @@ export default function PaymentForm() {
      
       useEffect(() => {
         localStorage.setItem('cardData', JSON.stringify(formData));
+        checkFormCompletion();
       }, [formData]);
     
     const handleInputChange = (event) => {
@@ -27,8 +28,24 @@ export default function PaymentForm() {
           ...prevData,
           [name]: newValue,
         }));
+        if (name === 'cardName' || name === 'cardNumber' || name === 'expDate' || name === 'cvv') {
+          checkFormCompletion();
+        }
+
+      };
+      const checkFormCompletion = () => {
+        // Checking if all required fields are filled
+        const isFormFilled =
+          formData.cardName.trim() !== '' &&
+          formData.cardNumber.trim() !== '' &&
+          formData.expDate.trim() !== '' &&
+          formData.cvv.trim() !== '';
+    
+        // Passed the form completion status to the parent component
+        handleFormCompletion(isFormFilled);
       };
   
+   console.log("formdata",formData)
     
   return (
     <React.Fragment>
@@ -40,6 +57,7 @@ export default function PaymentForm() {
           <TextField
             required
             id="cardName"
+            name="cardName"
             label="Name on card"
             fullWidth
             autoComplete="cc-name"
@@ -51,6 +69,7 @@ export default function PaymentForm() {
           <TextField
             required
             id="cardNumber"
+            name="cardNumber"
             label="Card number"
             fullWidth
             autoComplete="cc-number"
@@ -62,6 +81,7 @@ export default function PaymentForm() {
           <TextField
             required
             id="expDate"
+            name="expDate"
             label="Expiry date"
             fullWidth
             autoComplete="cc-exp"
@@ -73,6 +93,7 @@ export default function PaymentForm() {
           <TextField
             required
             id="cvv"
+            name="cvv"
             label="CVV"
             helperText="Last three digits on signature strip"
             fullWidth

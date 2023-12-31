@@ -4,7 +4,7 @@ import React from 'react'
 
 import { IoPencil } from 'react-icons/io5'
 import { MdLocationOn } from 'react-icons/md'
-import headerImage from "../components/Assets/HP_BFS_21Nov2023_zqffhz.webp"
+import headerImage from "../components/Assets/HP_DealsCorner_GIF_Compressed_8Dec2023_gazl4l.gif"
 import offer1 from "../components/Assets/offer1.png"
 import mobileoffer from "../components/Assets/offer1Mobile.png"
 import Box from "../components/Box/box"
@@ -134,7 +134,7 @@ var settings = {
         <IoPencil className='text-xs' />
     </div>
     <div>
-      <img src={headerImage}/>
+  <Link to={`/search/hp`}> <img src={headerImage}/></Link>   
     </div>
     
     <div className='p-5'>

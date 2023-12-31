@@ -11,6 +11,8 @@ import { useState,useEffect } from 'react'
 import { Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Checkout from './Checkoutpage/CheckoutForm';
+import emptycart from "../components/Assets/empty cart.gif"
+import "../styles/Addtocart.css"
 const Addtocart = () => {
     const [cartproducts,setcartproducts]=useState([]);
     const [total,setotal]=useState(0)
@@ -100,6 +102,28 @@ const Addtocart = () => {
         
         }
           
+        const removeAllitems=async()=>{
+              try{
+                const response = await fetch(`http://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
+                  method:'DELETE',
+          headers:{
+            'Authorization': `Bearer ${JwtToken}`,
+            'projectID': 'f104bi07c490',
+
+          }
+          
+                });
+
+                if(response.ok){
+                  alert("cart empty add products ");
+                }
+
+              }
+            catch(error){
+                  console.log
+            }
+
+        }
       
 
 
@@ -108,43 +132,51 @@ const Addtocart = () => {
 
   return (
     <>
-    <div className=' flex flex-row justify-center gap-5 '>
-   {isLoading?(<p>...Loading</p>):(<div className=' flex flex-col items-center'> 
+    <div className=' w-full'>
+    {Array.isArray(selectedProduct) && selectedProduct.length > 0 && (
+    <div className=' flex justify-end mt-4'>
+    <Button variant="primary" className=' w-40 h-10' onClick={()=>removeAllitems()}>Clear Cart</Button>
 
-{Array.isArray(selectedProduct) && selectedProduct.map((prod)=>(
+    </div>
+    )}
+    <div className=' hidden md:flex flex-row justify-center gap-5 w-11/12'>
+    {isLoading ? (
+          <p>...Loading</p>
+        ) : (
+          
+          <div className='flex flex-col items-center  w-4/5 h-auto px-5 py-4 '>
+            {Array.isArray(selectedProduct) && selectedProduct.length > 0 ? (
+              selectedProduct.map((prod) => (
+                <div className=''>
+                <Card className=' max-h-52 max-w-2xl mt-20 static' key={prod.product._id}>
+                  <Card.Body className='flex flex-row justify-around'>
+                    <Row>
+                      <Col xs={10} md={7}>
+                        <Image src={prod.product.displayImage} square />
+                      </Col>
+                    </Row>
+                    <div>
+                      <Card.Text className=' text-left'>
+                        {prod.product.name}
+                      </Card.Text>
+                      <div className=' flex flex-row gap-2 m-3 '>
+                        <Button variant="primary" className=' w-40 h-10' onClick={()=>alert("wishlist feature coming soon")}>Add to wishlist</Button>
+                        <Button variant="primary" className=' w-40 h-10' onClick={() => removeItem(prod.product._id)}>Remove</Button>
+                      </div>
+                    </div>
+                    <Card.Title className=' text-sm'>₹{prod.product.price.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}</Card.Title>
+                  </Card.Body>
+                </Card>
+                </div>
+              ))
+            ) : (
+              <img src={emptycart}></img>
+            )}
+          </div>
+          
+        )}
 
-<Card className=' max-h-52 max-w-2xl mt-20 static'>
-
-<Card.Body className='flex flex-row justify-around'>
-<Row>
-<Col xs={10} md={7}>
-<Image src={prod.product.displayImage} square />
-</Col>
-</Row>
-<div>
-
-<Card.Text className=' text-left'>
-  {prod.product.name}
-  </Card.Text>
-
-<div className=' flex flex-row gap-2 m-3 '>
-<Button variant="primary" className=' w-40 h-10'>Add to wishlist</Button>
-<Button variant="primary" className=' w-40 h-10' onClick={()=>removeItem(prod.product._id)}>Remove</Button>
-</div>
-</div>
-
-
-
-
-<Card.Title className=' text-sm'>{prod.product.price}</Card.Title>
-
-</Card.Body>
-</Card>
-  
-))}
-
-</div>
-)}
+{Array.isArray(selectedProduct) && selectedProduct.length > 0 && (
 <div className='max-w-xl max-h-60 mt-20' >
 <Card>
 <Card.Header>Order Summary</Card.Header>
@@ -153,15 +185,15 @@ const Addtocart = () => {
         <Card.Text>
          <div className=' flex justify-around gap-44'>
           <span>Total Price</span>
-          <span>${totalprice}</span>          
+          <span>₹{totalprice.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}</span>          
          </div>
          <div className=' flex justify-around gap-44'>
           <span>Discounted price</span>
-          <span>$0</span>          
+          <span>₹0</span>          
          </div>
          <div className=' flex justify-around gap-44'>
           <span>Shipping charges</span>
-          <span>${shippingCost}</span>          
+          <span>₹{shippingCost}</span>          
          </div>
 
         </Card.Text>
@@ -169,12 +201,88 @@ const Addtocart = () => {
      <Link to={`/Checkout`}> <Button variant="primary">Checkout</Button></Link>
         <div className=' flex justify-around gap-2'>
           <span>Total:</span>
-          <span>${totalaftershipping}</span>          
+          <span>₹{totalaftershipping.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}</span>          
          </div>
         </div>
       </Card.Body>
     </Card>
      </div>
+)}
+</div>
+{/* for mobile */}
+<div className='md:hidden'>
+<div className=' cart flex flex-col justify-center gap-5 w-11/12'>
+    {isLoading ? (
+          <p>...Loading</p>
+        ) : (
+          
+          <div className=' flex flex-col items-center w-4/5 h-auto px-5 py-4 '>
+            {Array.isArray(selectedProduct) && selectedProduct.length > 0 ? (
+              selectedProduct.map((prod) => (
+                <div className=' ml'>
+                <Card className=' max-h-52 w-screen ml-16 static' key={prod.product._id}>
+                  <Card.Body className='flex flex-row items-center'>
+                    <Row>
+                      <Col xs={8} md={7}>
+                        <Image src={prod.product.displayImage} square  />
+                      </Col>
+                    </Row>
+                    <div>
+                      <Card.Text className='text-left'>
+                        {prod.product.name}
+                      </Card.Text>
+                      <div className=' flex flex-row gap-2 m-3 '>
+                        <Button variant="primary" className=' w-40 h-10' onClick={()=>alert("Wishlist feature Coming soon")}>Add to wishlist</Button>
+                        <Button variant="primary" className=' w-40 h-10' onClick={() => removeItem(prod.product._id)}>Remove</Button>
+                      </div>
+                    </div>
+                    <Card.Title className=' text-sm'>₹{prod.product.price.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}</Card.Title>
+                  </Card.Body>
+                </Card>
+                </div>
+              ))
+            ) : (
+              <img src={emptycart}></img>
+            )}
+          </div>
+          
+        )}
+
+{Array.isArray(selectedProduct) && selectedProduct.length > 0 && (
+<div className='max-w-xl max-h-60 mt-20' >
+<Card>
+<Card.Header>Order Summary</Card.Header>
+      <Card.Body>
+        <Card.Title></Card.Title>
+        <Card.Text>
+         <div className=' flex justify-around gap-44'>
+          <span>Total Price</span>
+          <span>₹{totalprice.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}.00</span>          
+         </div>
+         <div className=' flex justify-around gap-44'>
+          <span>Discounted price</span>
+          <span>₹0</span>          
+         </div>
+         <div className=' flex justify-around gap-44'>
+          <span>Shipping charges</span>
+          <span>₹{shippingCost}</span>          
+         </div>
+
+        </Card.Text>
+        <div className=' flex flex-row items-center gap-44 mt-7'>
+     <Link to={`/Checkout`}> <Button variant="primary">Checkout</Button></Link>
+        <div className=' flex justify-around gap-2'>
+          <span>Total:</span>
+          <span>₹{totalaftershipping.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}</span>          
+         </div>
+        </div>
+      </Card.Body>
+    </Card>
+     </div>
+)}
+</div>
+</div>
+
 </div>
     </>
   )

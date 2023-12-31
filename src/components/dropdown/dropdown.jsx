@@ -11,6 +11,7 @@ import {FaAlignJustify,FaUser } from "react-icons/fa6";
 import { createTheme } from '@mui/material/styles';
 import { green, orange } from '@mui/material/colors';
 import { ThemeProvider } from 'styled-components';
+
 // const ITEM_HEIGHT = 48;
 // const ITEM_PADDING_TOP = 8;
 // const MenuProps = {
@@ -88,7 +89,7 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
         label="Age"
         onChange={handleChange}
         input={<OutlinedInput />}
-       variant='h6'
+      // variant='h6'
        // MenuProps={MenuProps}
        // inputProps={{ 'aria-label': 'Without label' }}
       >

@@ -62,7 +62,7 @@ function truncateText(text, numWords) {
         {truncateText(props.name, 6)}   
         </Typography>
         </div>
-
+        <div className=' relative mb-2'>
         <div> 
         {typeof props.ratings === 'number' ? (
                 <Typography variant="h6" component="div" sx={{ fontSize: '1rem', color: 'green', display: 'flex', alignItems: 'center',position:'relative'}} >
@@ -76,9 +76,10 @@ function truncateText(text, numWords) {
 
         </div>
         <div className=' mb-4'>
-        <Typography variant="body2" className='font-medium text-2xl relative'>
+        <Typography variant="body2" className='font-medium text-2xl relative '>
          ₹{props.price.toFixed(2).replace(/\d(?=(\d{4})+\.)/g, '$&,')}
         </Typography>
+        </div>
         </div>
 
       </CardContent>

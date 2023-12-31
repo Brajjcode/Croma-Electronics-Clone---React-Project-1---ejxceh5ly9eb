@@ -1,0 +1,14 @@
+/* Default styles */
+/* ... (your existing styles) ... */
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    /* Adjust product card layout for smaller screens */
+    .cart{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+  }
+  

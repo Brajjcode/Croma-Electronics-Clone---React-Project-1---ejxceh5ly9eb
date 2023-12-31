@@ -79,7 +79,7 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-     console.log(userData)
+   //  console.log(userData)
     try {
       const response = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
         method: 'POST',
@@ -97,12 +97,12 @@ export default function SignUp() {
       if (response.ok) {
         // API call successful, parse response JSON
         const responseData = await response.json();
-        console.log("responsedata=>",responseData)
+       // console.log("responsedata=>",responseData)
 
         // Store user credentials in local storage
         
         localStorage.setItem('userToken', responseData.token);
-        console.log(userData);
+       // console.log(userData);
         localStorage.setItem('userInfo' , JSON.stringify(userData))
         alert("Signedup Sucessfully");
         navigate("/signin")

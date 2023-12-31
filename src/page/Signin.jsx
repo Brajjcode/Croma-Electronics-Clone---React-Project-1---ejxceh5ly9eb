@@ -81,7 +81,7 @@ export default function SignIn() {
 
         if(response.ok){
           const responseData= await response.json();
-          console.log("response data=>",responseData)
+       //   console.log("response data=>",responseData)
           localStorage.setItem('userToken', responseData.token);
           localStorage.setItem('userdata',JSON.stringify(responseData));
           alert("logged in sucessfully");

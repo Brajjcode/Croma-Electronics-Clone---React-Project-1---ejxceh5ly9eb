@@ -1,6 +1,6 @@
 import React from 'react'
 import headphones from "../components/Assets/271807_xhhqk6.webp"
-import Box from '../components/Box/box'
+//import Box from '../components/Box/box'
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'react-router-dom';
@@ -8,6 +8,8 @@ import { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import star from '../components/Assets/icons8-star-filled-24.png'
+import Box from '../components/Box/box';
+
 const SingleProductpage = () => {
 
    const {id}= useParams();
@@ -134,13 +136,16 @@ const SingleProductpage = () => {
    navigate(`/Checkout/${prod._id}`)
    }
    console.log("reviews",reviews)
+
   return (
     <>{loader?(
       <div className=' text-white'>Loading....</div>
     ):(
          
+
+<Box>
     <div className='container'>
-    <div className="flex flex-row items-center justify-center p-40 gap-5">
+    <div className="hidden md:flex flex-row items-center justify-center p-40 gap-5">
     
       
     <img src={imageData?imageData:data.displayImage}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96" alt="..."/>
@@ -164,19 +169,59 @@ const SingleProductpage = () => {
          <Button variant="contained" color="success" onClick={()=>addproduct(data)}> Add to cart </Button>
          </Stack>
     </div>
+
+    
+     </div>
+     <div className=' md:hidden'>
+
+      {/* for mobile */}
+      <div className="flex flex-row items-center justify-center p-40 gap-5">
+    
+      
+    <img src={imageData?imageData:data.displayImage}class=" rounded mx-auto d-block object-scale-down h-80 w-96" alt="..."/>
+    <div className="content text-white ">
+        <h1 className=' font-semibold'>{data.name}</h1>
+
+        <div className=' p-2'>Price: ₹{data.price}.00</div>
+
+
+         <ol className="border-2 border-slate-700 p-1 w-60">
+         <h2 
+         className=''>Key Features:</h2>
+         {data.features && data.features.map((item)=>(
+        
+            <li>{item}</li>
+        
+      
+))}
+   </ol>
+        <Stack direction="column" spacing={2} className=' p-4'>
+         <Button variant="contained" color="success" onClick={()=>handlebuynow(data)}> Buy Now </Button>
+         <Button variant="contained" color="success" onClick={()=>addproduct(data)}> Add to cart </Button>
+         </Stack>
+    </div>
+
+    
+     </div>
+
+
      </div>
 
      <div >
+      <Box>
+      <div className=' mb-28'>
     <Slider {...settings}>
         {data.images && data.images.map((image)=>(
     <img src={image} className="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96 border-2 border-slate-700 p-1" onClick={()=>setImage(image)} alt="..."/>
        )) }
        </Slider>
+       </div>
+       </Box>
        {/* <img src={data.displayImage}class="thumbnail rounded mx-auto d-block object-scale-down h-80 w-96 border-2 border-slate-700 p-1"  onClick={()=>setImage(data.displayImage)} alt="..."/> */}
 
        {/* Display Reviews */}
 
-       <div className="reviews-container">
+       <div className="reviews-container mb-9">
           <h2>Reviews</h2>
           <ul className='border-2 border-slate-700 p-1'>
             {reviews.slice(0,5).map((review)=>(
@@ -196,7 +241,7 @@ const SingleProductpage = () => {
 
     </div>
 
-
+</Box>
     
  )}
     </>

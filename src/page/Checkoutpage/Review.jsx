@@ -87,6 +87,7 @@ export default function Review() {
       fetchData();
      },[id,token]);
   
+     
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -96,13 +97,13 @@ export default function Review() {
         {cartItems.map((prod) => (
           <ListItem key={prod.product.name} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={prod.product.name} secondary="" />
-            <Typography variant="body2">{prod.product.price}</Typography>
+            <Typography variant="body2"><div>₹{prod.product.price}.00</div></Typography>
           </ListItem>
         ))}
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            {totalamount}
+          ₹{totalamount}.00
           </Typography>
         </ListItem>
       </List>
@@ -116,10 +117,10 @@ export default function Review() {
           <Typography gutterBottom>{address.address1}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+          {/* <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Payment details
-          </Typography>
-          <Grid container>
+          </Typography> */}
+          {/* <Grid container>
             {payments.map((payment) => (
               <React.Fragment key={payment.name}>
                 <Grid item xs={6}>
@@ -130,7 +131,7 @@ export default function Review() {
                 </Grid>
               </React.Fragment>
             ))}
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </React.Fragment>

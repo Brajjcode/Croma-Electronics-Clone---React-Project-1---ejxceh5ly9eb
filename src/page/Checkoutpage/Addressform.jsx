@@ -1,4 +1,4 @@
-import * as React from 'react';
+  import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { createTheme } from '@mui/material';
 import { useState,useEffect } from 'react';
-export default function AddressForm() {
+export default function AddressForm({handleFormCompletion}) {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -18,9 +18,11 @@ export default function AddressForm() {
         country: '',
         saveAddress: false,
       });
+   //   const [formCompleted, setFormCompleted] = useState(false);
 
       useEffect(() => {
         localStorage.setItem('addressFormData', JSON.stringify(formData));
+           checkFormCompletion();
       }, [formData]);
     
       const handleInputChange = (event) => {
@@ -32,6 +34,26 @@ export default function AddressForm() {
           [name]: newValue,
         }));
       };
+      const checkFormCompletion = () => {
+        // Checking if all required fields are filled
+        const isFormFilled =
+          formData.firstName.trim() !== '' &&
+          formData.lastName.trim() !== '' &&
+          formData.address1.trim() !== '' &&
+          formData.city.trim() !== '' &&
+          formData.zip.trim() !== '' &&
+          formData.country.trim() !== '';
+    
+        // Updated the form completion status
+      //  setFormCompleted(isFormFilled);
+    
+        // Passed the form completion status to the parent component
+        handleFormCompletion(isFormFilled);
+      };
+
+
+
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -103,6 +125,7 @@ export default function AddressForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+             required
             id="state"
             name="state"
             label="State/Province/Region"

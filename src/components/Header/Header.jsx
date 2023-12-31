@@ -21,22 +21,26 @@ const Header = () => {
     const[categories,setcategory]= useState('');
      const [logintext,setLogintext]= useState(<FaUser/>);
      const [shouldLogout, setShouldLogout] = useState(false);
+     const [name,setname]= useState('');
+     const [userInfo,setUserInfo]=useState(JSON.parse(localStorage.getItem('userInfo')))
    //  const[isjwt,setjwt]= useState('')
-
+   
      const logout=()=>{
     
         localStorage.removeItem('userToken')
         setLogintext(<FaUser/>)
         setShouldLogout(false);
+        setname('');
         alert("logged out successfully");
      }
 
      useEffect(()=>{
       const token=localStorage.getItem('userToken');
-
+   //   const userInfo= 
       setLogintext(token?<CiLogout/>:<FaUser/>)
+      setname(userInfo.name)
       setShouldLogout(token ? true : false);
-     },[])
+     },[logintext,name,shouldLogout])
 
     const handleCategorySelect = (category) => {
         // Implement your logic based on the selected category
@@ -46,7 +50,8 @@ const Header = () => {
         console.log('Selected Category:', categories);
       
       };
-
+ //console.log("userinfo",userInfo);
+ //console.log("name",name);
   return (
     <div>
       
@@ -67,8 +72,7 @@ const Header = () => {
       <DynamicSelect
         apiEndpoint='https://academics.newtonschool.co/api/v1/ecommerce/electronics/categories'
         projectId='f104bi07c490'
-        onSelectCategory={handleCategorySelect}
-        
+        onSelectCategory={handleCategorySelect}      
        />
          
 
@@ -88,6 +92,9 @@ const Header = () => {
           <p className='whitespace-nowrap text-sm'>Mumbai 400049</p>
           <IoPencil className='text-xs' />
       </div>
+       {shouldLogout?(<div>
+        Hello,{name}
+      </div>):""}
       {/* <div className=' text-2xl' >
        <Link to={`/signin`}  ><FaUser/></Link>
       </div> */}
@@ -111,22 +118,33 @@ const Header = () => {
                           <div className='flex items-center gap-1'>
                               <div >
                               <DynamicSelect
-        apiEndpoint='https://academics.newtonschool.co/api/v1/ecommerce/electronics/categories'
-        projectId='f104bi07c490'
-        onSelectCategory={handleCategorySelect}
+                               apiEndpoint='https://academics.newtonschool.co/api/v1/ecommerce/electronics/categories'
+                              projectId='f104bi07c490'
+                              onSelectCategory={handleCategorySelect}
         
-       />
+                                />
                               </div>
                               <div className='w-20 '>
                                   <img src={logo} className="w-full" />
                               </div>
                           </div>
                           <div className='flex items-center gap-3 mr-2'>
-                              <div className=' text-xl'>
-                              <Link to={`/signin`} ><FaUser/></Link>
-                              </div>
+
+                          {shouldLogout?(<div>
+                           Hello,{name}
+                          </div>):""}
+      {/* <div className=' text-2xl' >
+       <Link to={`/signin`}  ><FaUser/></Link>
+      </div> */}
+                    <div className='text-2xl'  onClick={() => shouldLogout? logout():undefined}>
+                    {!shouldLogout ? (
+                            <Link to="/signin">{logintext}</Link>
+                    ) :(logintext)
+                              }
+                                     </div>
+
                               <div className=' text-xl relative'>
-                                  <FaShoppingBag />
+                              <Link to={`/addtoCart`}  > <FaShoppingBag /> </Link>
                                   {/* <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p> */}
                               </div>
                           </div>
