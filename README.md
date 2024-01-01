@@ -63,23 +63,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 
 ### Deployment
 
-Hosted Link:https://6592702c814248985452e9fa--splendorous-fenglisu-108e7e.netlify.app/
-
-Features:
-Key Fetures:
-1.Implemented product categorization and seller tag functionality via API.
-2.Integrated a robust search feature to enable users to find products efficiently.
-3.Implemented sorting by ratings and prices for an enhanced user experience..
-4.Utilized React Router to enable smooth navigation between different pages.
-5.Created dedicated pages for individual products, providing detailed information.
-6.Implementing a seamless "Add to Cart" feature for users to easily manage their shopping.
-7.Worked on JWT-based user sign-in authentication for secure transactions.
-8.Users are prompted to sign in when attempting to add items or make purchases.
-9.Developed a comprehensive checkout page to streamline the purchasing process.
-Tech Stack Used
-1. React js.
-2. Tailwind cs
-
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
 ### `npm run build` fails to minify
