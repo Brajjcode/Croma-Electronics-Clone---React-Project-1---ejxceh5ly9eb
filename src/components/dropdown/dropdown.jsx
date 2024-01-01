@@ -32,7 +32,7 @@ function getStyles(theme, name, personName) {
 const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
   const theme = useTheme();
   const [options, setOptions] = React.useState([]);
-  const [selectedOptions, setSelectedOptions] = React.useState([]);
+  const [selectedOptions, setSelectedOptions] = React.useState('');
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +66,7 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
   const handleChange = (event) => {
     const { target: { value } } = event;
     setSelectedOptions(value);
+    
   onSelectCategory(value); // Pass the selected category to the parent component
   };
   const innerTheme = createTheme({
@@ -81,7 +82,7 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
        <FormControl sx={{ m: 1, Width:5}} size="small">
       <InputLabel className=' text-white text-3xl' ><FaAlignJustify/></InputLabel>
       
-
+ 
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
@@ -89,7 +90,7 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
         label="Age"
         onChange={handleChange}
         input={<OutlinedInput />}
-      // variant='h6'
+       variant='h6'
        // MenuProps={MenuProps}
        // inputProps={{ 'aria-label': 'Without label' }}
       >
@@ -108,7 +109,7 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
           </ThemeProvider>
             
           ))}
-        </Select>
+        </Select> 
         
       </FormControl>
       

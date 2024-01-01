@@ -16,6 +16,9 @@ const Dropdownpage = () => {
  useEffect(()=>{
         const getCategories= async ()=>{
           try{
+            if (Page === 1) {
+              setCategoriesresult([]);
+            }
             const responsecat = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=10 &page=${Page}&filter={"subCategory":"${seletedterm}"}`, {
                 method: 'GET',
                 headers: {
@@ -48,9 +51,13 @@ const Dropdownpage = () => {
       setPage(Page+1);
     }
 
+    useEffect(() => {
+      setPage(1);
+    }, [seletedterm]);
+
   return (
     <div>
-        hello
+        
          <div>
         <h2 className='font-medium text-2xl pl-5'>{seletedterm} result</h2>
         

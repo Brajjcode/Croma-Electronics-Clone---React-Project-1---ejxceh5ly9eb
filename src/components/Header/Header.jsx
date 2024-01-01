@@ -22,7 +22,7 @@ const Header = () => {
      const [logintext,setLogintext]= useState(<FaUser/>);
      const [shouldLogout, setShouldLogout] = useState(false);
      const [name,setname]= useState('');
-     const [userInfo,setUserInfo]=useState(JSON.parse(localStorage.getItem('userInfo')))
+     const [userInfo,setUserInfo]=useState(null)
    //  const[isjwt,setjwt]= useState('')
    
      const logout=()=>{
@@ -37,9 +37,15 @@ const Header = () => {
      useEffect(()=>{
       const token=localStorage.getItem('userToken');
    //   const userInfo= 
+   const storedUserInfo = localStorage.getItem('userdata');
       setLogintext(token?<CiLogout/>:<FaUser/>)
-      setname(userInfo.name)
+     // setname(userInfo.name)
       setShouldLogout(token ? true : false);
+      if (storedUserInfo) {
+        const parsedUserInfo = JSON.parse(storedUserInfo);
+        setUserInfo(parsedUserInfo);
+        setname(parsedUserInfo.data.name);
+      }
      },[logintext,name,shouldLogout])
 
     const handleCategorySelect = (category) => {
