@@ -101,10 +101,32 @@ const Addtocart = () => {
           }
         
         }
-          
+        //adding to wishlist
+
+       async function wishlist(id){
+        try{
+        
+         const result = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/wishlist/${id}`,{
+           method:'PATCH',
+           headers:{
+            'Authorization': `Bearer ${JwtToken}`,
+            'projectID': 'f104bi07c490',
+           }
+           
+          //console.log(id);
+         })
+            console.log(id);
+            console.log(result);
+        }
+        catch(error){
+          console.log(error);
+        }
+        }
+        // remove all items  
         const removeAllitems=async()=>{
               try{
                 const response = await fetch(`http://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
+                  mode:'no-cors',
                   method:'DELETE',
           headers:{
             'Authorization': `Bearer ${JwtToken}`,
@@ -113,14 +135,16 @@ const Addtocart = () => {
           }
           
                 });
-
+                  console.log(response)
+                  const data= await response.json();
+                  console.log(data);
                 if(response.ok){
                   alert("cart empty add products ");
                 }
 
               }
             catch(error){
-                  console.log
+                  console.log(error);
             }
 
         }
@@ -160,7 +184,7 @@ const Addtocart = () => {
                         {prod.product.name}
                       </Card.Text>
                       <div className=' flex flex-row gap-2 m-3 '>
-                        <Button variant="primary" className=' w-40 h-10' onClick={()=>alert("wishlist feature coming soon")}>Add to wishlist</Button>
+                        <Button variant="primary" className=' w-40 h-10' onClick={()=>wishlist(prod.product._id)}>Add to wishlist</Button>
                         <Button variant="primary" className=' w-40 h-10' onClick={() => removeItem(prod.product._id)}>Remove</Button>
                       </div>
                     </div>

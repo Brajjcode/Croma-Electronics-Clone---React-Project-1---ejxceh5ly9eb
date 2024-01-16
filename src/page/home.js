@@ -69,11 +69,11 @@ setLoader(false);
     const handleSearch = async () => {
 
   
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&sort={"price":-1}&sellerTag=best seller', setDealoftheday);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&sort={"rating":-1}&sellerTag=trending', setTrendingproducts);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&filter={"subCategory":"tv"}', setTelevision);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=7&sort={"price":-1}&sellerTag=best seller', setDealoftheday);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=7&sort={"rating":-1}&sellerTag=trending', setTrendingproducts);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=7&filter={"subCategory":"tv"}', setTelevision);
         // fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products', setcategory, pagecategories);
-        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=4&filter={"subCategory":"mobile"}', setmobile);
+        fetchProducts('https://academics.newtonschool.co/api/v1/ecommerce/electronics/products?limit=7&filter={"subCategory":"mobile"}', setmobile);
       
     };
 

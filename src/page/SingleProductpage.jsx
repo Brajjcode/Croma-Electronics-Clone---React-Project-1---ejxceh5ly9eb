@@ -17,6 +17,7 @@ const SingleProductpage = () => {
    const [imageData,setImage]=useState('')
    const [loader,setLoader]= useState(false)
  const  [reviews,setreviews]= useState([])
+ const[reviewname,setreviewname]= useState('')
    const navigate= useNavigate();
    
 
@@ -56,6 +57,8 @@ const SingleProductpage = () => {
    
     
    };
+
+
  
  
    useEffect(()=>{
@@ -70,6 +73,9 @@ const SingleProductpage = () => {
          const Jsonresponse= await response.json();
          console.log(Jsonresponse);
          setdata(Jsonresponse.data);
+         const randomText= makeid(5);
+           setreviewname(randomText)
+
          setLoader(false)
 
          const reviewResponse = await fetch (`https://academics.newtonschool.co/api/v1/ecommerce/review/${id}`,{
@@ -83,13 +89,28 @@ const SingleProductpage = () => {
       console.log("review response",reviewresponsejson);
       setreviews(reviewresponsejson.data)
        
-
     }
 
-
-
+    function makeid(length) {
+       let result = '';
+       const characters = 'abcdefghijklmnopqrstuvwxyz';
+       const charactersLength = characters.length;
+       let counter = 0;
+       while (counter < length) {  
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+         counter += 1;
+       }
+     return result;
+     //return reviewname;
+   }
+                 
+    //makeid(5);          
     getData();
    },[id])
+
+  
+
+//console.log();
  
    const addproduct= async(prod)=>{
     const jwtToken = localStorage.getItem('userToken');
@@ -125,7 +146,6 @@ const SingleProductpage = () => {
       }
    }
 
-
    const handlebuynow=(prod)=>{
     const jwtToken=localStorage.getItem('userToken');
     if(!jwtToken){
@@ -136,6 +156,22 @@ const SingleProductpage = () => {
    navigate(`/Checkout/${prod._id}`)
    }
    console.log("reviews",reviews)
+   function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStars = Math.ceil(rating - fullStars);
+  
+    const stars = [];
+  
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<img key={i} src={star} style={{ marginLeft: '0.2rem', height: '0.8rem' }} />);
+    }
+  
+    if (halfStars === 1) {
+      stars.push(<img key={fullStars} src={halfStar} style={{ marginLeft: '0.2rem', height: '0.8rem' }} />);
+    }
+  
+    return stars;
+  }
 
   return (
     <>{loader?(
@@ -144,7 +180,7 @@ const SingleProductpage = () => {
          
 
 <Box>
-    <div className='container'>
+    <div className='container'> 
     <div className="hidden md:flex flex-row items-center justify-center p-40 gap-5">
     
       
@@ -226,9 +262,11 @@ const SingleProductpage = () => {
           <ul className='border-2 border-slate-700 p-1'>
             {reviews.slice(0,5).map((review)=>(
              <li key={review._id}>
-            <p className=' text-white '>  <strong>{review.user}</strong>:{review.text} </p>
-            <p className=' text-white flex flex-row'>Rating: <img src={star} style={{ marginLeft: '0.2rem', height:'0.8rem' }}/><span className=' text-green-300'>{review.ratings}/5</span></p>
-
+            <p className=' text-white '> <strong>{reviewname}</strong>:{review.text} </p>
+            {/* <p className=' text-white flex flex-row'>Rating: <img src={star} style={{ marginLeft: '0.2rem', height:'0.8rem' }}/><span className=' text-green-300'>{review.ratings}/5</span></p> */}
+            <p className='text-white flex flex-row'>
+          Rating: {generateStars(review.ratings)} 
+        </p>
              </li>
               
             ))}

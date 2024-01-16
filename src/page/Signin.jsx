@@ -87,6 +87,10 @@ export default function SignIn() {
           alert("logged in sucessfully");
            navigate("/", { state: { userloggedin: true } });
         }
+
+        else{
+          alert('Incorrect username or password');
+        }
       }
       catch(error){ 
              console.log(error);

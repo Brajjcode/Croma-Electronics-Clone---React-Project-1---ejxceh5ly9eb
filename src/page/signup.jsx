@@ -80,6 +80,10 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
    //  console.log(userData)
+   if (!userData.password) {
+    alert('Please enter a password.');
+    return;
+  }
     try {
       const response = await fetch('https://academics.newtonschool.co/api/v1/user/signup', {
         method: 'POST',
@@ -111,7 +115,16 @@ export default function SignUp() {
         
         }else {
        // Handle error responses
-       console.error('API call failed:', response.status, response.statusText);
+      // console.error('API call failed:', response.status, response.statusText);
+      const errorData = await response.json();
+      console.error('API call failed:', response.status, response.statusText, errorData);
+
+      // Display alert for specific error message
+      if (errorData.message) {
+        alert(`Error: ${errorData.message}`);
+      } else {
+        alert('An error occurred during signup. Please try again.');
+      }
       }
     } catch (error) {
       console.error('An error occurred during the API call:', error);

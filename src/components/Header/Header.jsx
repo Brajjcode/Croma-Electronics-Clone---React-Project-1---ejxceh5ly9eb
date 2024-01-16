@@ -13,9 +13,14 @@ import { useState,useEffect } from 'react';
 import DynamicSelect from '../dropdown/dropdown';
 import { CiLogout } from "react-icons/ci";
 import Box from '../Box/box';
+//import Box from '@mui/material/Box';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 const Header = () => {
+// Write pin code api code.
+//create wishlist.
 
     const[ searchterm, setsearchterm]=useState('');
     const[categories,setcategory]= useState('');
@@ -24,7 +29,34 @@ const Header = () => {
      const [name,setname]= useState('');
      const [userInfo,setUserInfo]=useState(null)
    //  const[isjwt,setjwt]= useState('')
-   
+   const [show, setShow] = useState(false);
+  const [pincode,setPincode]= useState('400049')
+
+   const handleClose = async() =>{
+    try{
+          const result= await fetch(`http://postalpincode.in/api/pincode/${pincode}`,{
+            mode: 'no-cors'
+          })
+          console.log("pin",result);
+          const r=await result.json();
+          console.log(r);
+          if (result.ok){
+            console.log(result);
+          }
+          else{
+            alert("Cannot deliver in your area")
+          }
+        }
+        catch(error){
+          console.log(error);
+        }    
+     setShow(false);
+   }
+   const handleShow = () => setShow(true);
+  
+
+
+
      const logout=()=>{
     
         localStorage.removeItem('userToken')
@@ -95,7 +127,25 @@ const Header = () => {
   <div className='flex items-center gap-9'>
       <div className="flex items-center gap-2">
           <MdLocationOn className='text-xl' />
-          <p className='whitespace-nowrap text-sm'>Mumbai 400049</p>
+          
+          <Button variant="primary" onClick={handleShow}>
+          <p className='whitespace-nowrap text-sm'>{pincode}</p>
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Enter city & pin code.</Modal.Title>
+        </Modal.Header>
+        <Modal.Body><input type='text' placeholder='search for your area using  pincode e.g. Mumbai,400049' className=' w-full h-12 px-4 py-2 border border-black rounded-md focus:outline-none focus:border-blue-500 ' onChange={(e)=>setPincode(e.target.value)} value={pincode}/></Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" className=' bg-red-600' onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" className=' bg-blue-600' onClick={handleClose}>
+            Search
+          </Button>
+        </Modal.Footer>
+      </Modal>
           <IoPencil className='text-xs' />
       </div>
        {shouldLogout?(<div>

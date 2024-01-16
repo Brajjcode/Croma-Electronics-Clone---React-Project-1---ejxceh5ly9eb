@@ -19,6 +19,26 @@ export default function AddressForm({handleFormCompletion}) {
         saveAddress: false,
       });
    //   const [formCompleted, setFormCompleted] = useState(false);
+   const [validationMessages, setValidationMessages] = useState({
+    zip: '',
+  });
+  const useDebounce = (value, delay) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+      const timerId = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => {
+        clearTimeout(timerId);
+      };
+    }, [value, delay]);
+
+    return debouncedValue;
+  };
+
+  const debouncedFormData = useDebounce(formData, 500);
 
       useEffect(() => {
         localStorage.setItem('addressFormData', JSON.stringify(formData));
@@ -33,6 +53,29 @@ export default function AddressForm({handleFormCompletion}) {
           ...prevData,
           [name]: newValue,
         }));
+
+        if (name === 'zip') {
+          validateInput(name, newValue);
+        }
+      };
+      const validateInput = (name, value) => {
+        setValidationMessages((prevMessages) => ({
+          ...prevMessages,
+          [name]: '',
+        }));
+    
+        switch (name) {
+          case 'zip':
+            if (value.length !== 6) {
+              setValidationMessages((prevMessages) => ({
+                ...prevMessages,
+                [name]: 'Zip code must be 6 digits',
+              }));
+            }
+            break;
+          default:
+            break;
+        }
       };
       const checkFormCompletion = () => {
         // Checking if all required fields are filled
@@ -145,6 +188,8 @@ export default function AddressForm({handleFormCompletion}) {
             autoComplete="shipping postal-code"
             variant="standard"
             onChange={handleInputChange}
+            helperText={validationMessages.zip}
+            error={!!validationMessages.zip}
         
           />
         </Grid>
