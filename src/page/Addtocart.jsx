@@ -125,8 +125,8 @@ const Addtocart = () => {
         // remove all items  
         const removeAllitems=async()=>{
               try{
-                const response = await fetch(`http://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
-                  mode:'no-cors',
+                const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart`,{
+                  // mode:'no-cors',
                   method:'DELETE',
           headers:{
             'Authorization': `Bearer ${JwtToken}`,
