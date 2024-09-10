@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import star from '../components/Assets/icons8-star-filled-24.png'
 import Box from '../components/Box/box';
+import { cartcount } from '../components/UpdateItems/Updateitesm';
+import Toast from 'react-bootstrap/Toast';
 
 const SingleProductpage = () => {
 
@@ -18,7 +20,11 @@ const SingleProductpage = () => {
    const [loader,setLoader]= useState(false)
  const  [reviews,setreviews]= useState([])
  const[reviewname,setreviewname]= useState('')
+ const[cart,updatedcart]=useState(0);
+ const[cartAlert, SetCartAlert]= useState(false)
    const navigate= useNavigate();
+
+   localStorage.setItem("Updatecart",cart);
    
 
    var settings = {
@@ -57,6 +63,10 @@ const SingleProductpage = () => {
    
     
    };
+
+   setTimeout(()=>{
+    SetCartAlert(false)
+   },5000)
 
 
  
@@ -114,30 +124,37 @@ const SingleProductpage = () => {
  
    const addproduct= async(prod)=>{
     const jwtToken = localStorage.getItem('userToken');
-    
-       if(!jwtToken){
+    console.log(jwtToken);
+       if(jwtToken===undefined||jwtToken===null){ 
+
              
         navigate('/signin')
         return;
        }
    //   const JwtToken= 'your jwt token';
          console.log("productid=>",prod._id)
-      const projectID='f104bi07c490';
+      // projectID='f104bi07c490';
       try {
         const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/${prod._id}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `Bearer ${jwtToken}`,
-            'projectID': projectID,
+            'projectID': 'f104bi07c490',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             quantity: 1, // You can adjust the quantity as needed
           }),
         });
-  
+      //  console.log(response);
+      //  const d= await response.json();
+      //  console.log(d);
         if (response.ok) {
-          alert('Item added to the cart successfully');
+         // cartcount=cartcount+1;
+          updatedcart(cart+1);
+         // alert('Item added to the cart successfully');
+         SetCartAlert(true)
+          
         } else {
           alert('Failed to add item to the cart');
         }
@@ -167,7 +184,7 @@ const SingleProductpage = () => {
     }
   
     if (halfStars === 1) {
-      stars.push(<img key={fullStars} src={halfStar} style={{ marginLeft: '0.2rem', height: '0.8rem' }} />);
+      stars.push(<img key={fullStars} src={halfStars} style={{ marginLeft: '0.2rem', height: '0.8rem' }} />);
     }
   
     return stars;
@@ -181,6 +198,23 @@ const SingleProductpage = () => {
 
 <Box>
     <div className='container'> 
+
+    {
+    cartAlert &&(
+      <>
+      <div className=' flex items-center justify-center pt-3'>
+      <Toast bg='secondary' style={{ zIndex: 1000 }} >
+      <Toast.Header>
+        <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+        <strong className="me-auto">Cart</strong>
+        
+      </Toast.Header>
+      <Toast.Body>Item added to Cart sucessfully.</Toast.Body>
+    </Toast>
+    </div>
+      </>
+    )
+  }
     <div className="hidden md:flex flex-row items-center justify-center p-40 gap-5">
     
       

@@ -41,24 +41,58 @@ function truncateText(text, numWords) {
 
     <>
 <ThemeProvider theme={darkTheme}>
-    {/* <Card sx={{ maxWidth: 300, margin: 2, '@media (max-width:500px)': { maxWidth: '100%' } }} > */}
-    <Card sx={{ maxWidth: 280, margin: 2,height:'380px', display: 'flex', flexDirection: 'column', position:'relative' }}>
+    <Card sx={{
+    width: 280, // Set a fixed width
+    height: '100%', // Set a fixed height to make all cards the same height
+    margin: 2,
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+  }} >
+    {/* <Card sx={{ maxWidth: 280, margin: 2,maxheight:'200px', display: 'flex', flexDirection: 'column', position:'relative' }}> */}
 
       <CardMedia
        
         component="img"
         alt="green iguana"
         height="140"
-        //sx={{maxheight:380, maxWidth:280, margin:0.2}}
-       sx={{ maxWidth: 220, objectFit: 'cover', margin:'auto', display:'block' }}
+         sx={{
+          objectFit: 'cover',
+          width: '100%', // Make sure the image takes 100% width within the card
+          height: '100%', // Set a fixed height for the image within the card
+          margin: 'auto',
+          display: 'block',
+        }}
+      //  sx={{ maxWidth: 220, objectFit: 'cover', margin:'auto', display:'block' }}
         image={props.url}
         onError={handleImageError}
 
 
       />
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1, position:'relative' }}>
+      <CardContent 
+      // sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1, position:'relative' }}
+
+      sx={{
+        objectFit: 'cover',
+        // width: '100%', // Make sure the image takes 100% width within the card
+        // height: '100%', // Set a fixed height for the image within the card
+        // margin: 'auto',
+        // display: 'block',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        flexGrow: 1,
+        position: 'relative',
+        height: '100%', // Set a fixed height for CardContent
+        overflow: 'hidden', 
+      }}
+      >
+
         <div className='mb-4' > 
-        <Typography gutterBottom variant="h6" component="div" sx={{fontSize:'1rem'}}>
+        <Typography gutterBottom variant="h6" component="div" sx={{fontSize:'1.3rem' ,
+      lineHeight: '1.2', // Set line height for better control of text wrapping
+     
+      }}>
         {truncateText(props.name, 6)}   
         </Typography>
         </div>

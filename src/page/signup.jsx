@@ -107,9 +107,11 @@ export default function SignUp() {
         
         localStorage.setItem('userToken', responseData.token);
        // console.log(userData);
-        localStorage.setItem('userInfo' , JSON.stringify(userData))
-        alert("Signedup Sucessfully");
-        navigate("/signin")
+        localStorage.setItem('userdata' , JSON.stringify(userData))
+       // alert("Signedup Sucessfully");
+       // navigate("/")
+       navigate("/", { state: { userloggedin: true } });
+       window.location.reload()
 
 
         
@@ -215,12 +217,12 @@ export default function SignUp() {
                   onChange={handleInputchange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -233,7 +235,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to={`/signin`} variant="body2">
-                  Already have an account? Sign in
+                  Already have an account? <span className=' text-blue-600'>Login</span>
                 </Link>
               </Grid>
             </Grid>

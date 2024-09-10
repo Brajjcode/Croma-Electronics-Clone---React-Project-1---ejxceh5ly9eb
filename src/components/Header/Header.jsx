@@ -16,6 +16,9 @@ import Box from '../Box/box';
 //import Box from '@mui/material/Box';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { cartcount } from '../UpdateItems/Updateitesm';
+import { useCallback } from 'react';
+import Toast from 'react-bootstrap/Toast';
 
 
 const Header = () => {
@@ -31,6 +34,18 @@ const Header = () => {
    //  const[isjwt,setjwt]= useState('')
    const [show, setShow] = useState(false);
   const [pincode,setPincode]= useState('400049')
+  const[updateCart,setUpdateCart]= useState(localStorage.getItem(updateCart));
+  const [storedUserInfo,setStoreduserInfo]=useState(localStorage.getItem('userdata'))
+  const[logoutToast,setLogoutToast]= useState(false)
+  //const [initialLoad, setInitialLoad] = useState(false);
+ 
+  //const parsedUserInfo = JSON.parse(storedUserInfo);
+  //const storedUserInfo = localStorage.getItem('userdata');
+  const parsedUserInfo = JSON.parse(storedUserInfo);
+ 
+  setTimeout(()=>{
+    setLogoutToast(false)
+  },3000)
 
    const handleClose = async() =>{
     try{
@@ -63,43 +78,88 @@ const Header = () => {
         setLogintext(<FaUser/>)
         setShouldLogout(false);
         setname('');
-        alert("logged out successfully");
+       // alert("logged out successfully");
+       setLogoutToast(true)
+       
+       // window.location.reload();
      }
 
      useEffect(()=>{
       const token=localStorage.getItem('userToken');
-   //   const userInfo= 
-   const storedUserInfo = localStorage.getItem('userdata');
-      setLogintext(token?<CiLogout/>:<FaUser/>)
-     // setname(userInfo.name)
-      setShouldLogout(token ? true : false);
+  
+   const storedUserInfo = localStorage.getItem('userdata')
+       
+
+    if (token) {
+  
+      setShouldLogout(true);
+
+    } else {
+    
+      setShouldLogout(false);
+    }
+  //  setLogintext(shouldLogout?<CiLogout/>:<FaUser/>)
+
+    
+
       if (storedUserInfo) {
         const parsedUserInfo = JSON.parse(storedUserInfo);
         setUserInfo(parsedUserInfo);
-        setname(parsedUserInfo.data.name);
+        console.log("parsed",parsedUserInfo)
+        setname(parsedUserInfo.name)
       }
-     },[logintext,name,shouldLogout])
+          
+  
+     
 
-    const handleCategorySelect = (category) => {
-        // Implement your logic based on the selected category
-        
-        setcategory(category);
-        console.log(category)
-        console.log('Selected Category:', categories);
+     },[shouldLogout,name])
+
+     useEffect(() => {
+      setLogintext(shouldLogout ? <CiLogout /> : <FaUser />);
+    }, [shouldLogout]); // Only re-run when shouldLogout changes
+  
+  
+
+
+     const handleCategorySelect = (category) => {
+      // Implement your logic based on the selected category
       
-      };
- //console.log("userinfo",userInfo);
- //console.log("name",name);
+     setcategory(category);
+      console.log(category)
+      console.log('Selected Category:', categories);
+    
+    };
+    // const handleLogin = () => {
+    //   const token = localStorage.getItem('userToken');
+    //   const storedUserInfo = localStorage.getItem('userdata');
+      
+    //   if (token) {
+    //     setLogintext(<CiLogout />);
+    //     setShouldLogout(true);
+    //   }
+  
+    //   if (storedUserInfo) {
+    //     const parsedUserInfo = JSON.parse(storedUserInfo);
+    //     setUserInfo(parsedUserInfo);
+    //     setname(parsedUserInfo.data.user.name);
+    //   }
+    // };
+
+   // console.log("stored",storedUserInfo)
+   // console.log(parsedUserInfo.data.user.name)
+  // console.log("userinfo",storedUserInfo.)
+ 
   return (
     <div>
       
       <header className='bg-black text-white flex justify-between h-20 '>
+
+
   
   <div className='w-full m-auto max-w-[1200] px-2'>
     <Box>
   <div className='hidden items-center justify-between w-full md:flex'>
-  
-  
+ 
   <div className='p-3 flex items-center gap-12 w-4/5'>
     <Link to={`/`}><div className='w-32 min-w-[128px]'>
           <img src={logo} className="w-full" />
@@ -110,7 +170,7 @@ const Header = () => {
       <DynamicSelect
         apiEndpoint='https://academics.newtonschool.co/api/v1/ecommerce/electronics/categories'
         projectId='f104bi07c490'
-        onSelectCategory={handleCategorySelect}      
+        onSelectCategory={()=>handleCategorySelect}      
        />
          
 
@@ -124,8 +184,23 @@ const Header = () => {
   </div>
   
   
+  
   <div className='flex items-center gap-9'>
       <div className="flex items-center gap-2">
+      {
+    logoutToast &&(
+      <>
+      <Toast bg='secondary' style={{ zIndex: 1000 }} >
+      <Toast.Header>
+        <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+        <strong className="me-auto">Logout</strong>
+        
+      </Toast.Header>
+      <Toast.Body>Loggedout Sucessfully.</Toast.Body>
+    </Toast>
+      </>
+    )
+  }
           <MdLocationOn className='text-xl' />
           
           <Button variant="primary" onClick={handleShow}>
@@ -163,7 +238,7 @@ const Header = () => {
 
       <div className=' text-2xl relative'>
      <Link to={`/addtoCart`}  >  <FaShoppingBag />
-          {/* <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>0</p>*/}</Link> 
+            {/* <p className='text-xs w-3 text-center h-3 flex items-center justify-center rounded-full bg-greenblue absolute top-0 -right-2 text-black'>{updateCart}</p>*/}</Link>  
       </div>
   </div>
   
@@ -176,7 +251,7 @@ const Header = () => {
                               <DynamicSelect
                                apiEndpoint='https://academics.newtonschool.co/api/v1/ecommerce/electronics/categories'
                               projectId='f104bi07c490'
-                              onSelectCategory={handleCategorySelect}
+                              onSelectCategory={()=>handleCategorySelect}
         
                                 />
                               </div>

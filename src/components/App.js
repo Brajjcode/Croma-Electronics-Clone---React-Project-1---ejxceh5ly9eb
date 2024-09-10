@@ -19,9 +19,6 @@ import Review from "../page/Checkoutpage/Review";
 function App() {
   return (
     <>
-    
-   
-
       <HashRouter>
       <Header/>
       <Routes>

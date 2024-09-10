@@ -15,6 +15,7 @@ import AddressForm from './Addressform';
 import PaymentForm from './Payment';
 import Review from './Review';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
@@ -55,6 +56,9 @@ export default function Checkout() {
   const [cartItems, setCartItems] = React.useState([]);
   const [formCompleted, setFormCompleted] = React.useState(false);
   const [isFormValid, setIsFormValid] = React.useState(false);
+  const[id,setid]=useState("");
+  const[result,setResult]=useState([]);
+  const[cart,setCart]=React.useState([])
   const navigate= useNavigate();
 
   const handleNext = () => {
@@ -89,12 +93,16 @@ export default function Checkout() {
         },
       });
       const cartData = await cartResponse.json();
-
+      setCart(cartData)
+      setid(cartData.data._id)
+      setResult(cartData.results)
       const itemsArray = cartData.data && cartData.data.items ? cartData.data.items : [];
       const total = itemsArray.reduce((acc, prod) => acc + prod.product.price, 0);
-
+      // console.log(cartData) 
       setTotalamount(total);
+     
       setCartItems(itemsArray);
+
     } catch (error) {
       console.error('Error fetching cart data:', error);
     }
@@ -109,47 +117,86 @@ export default function Checkout() {
       fetchData();
     }
   }, [JwtToken,navigate]);
-  // const handlePlaceOrder = async () => {
-  //   const Jwttoken= localStorage.getItem('userToken');
-  //   try {
-  //     const productIds = cartItems.map((item) => item.product._id);
-  //     console.log("productids",productIds)
-  //     console.log("Jwt",JwtToken)
-  //     const response = await fetch('https://academics.newtonschool.co/api/v1/ecommerce/order', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Authorization': `Bearer ${Jwttoken}`,
-  //         'projectID': 'f104bi07c490',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: {
-  //         productId: "651171a14f06474712306c09",  // Replace with the actual product ID
-  //         quantity: 1,  // Replace with the desired quantity
-  //         addressType: 'HOME',
-  //         address: {
-  //           street: '123 Main St',
-  //           city: 'Anytown',
-  //           state: 'CA',
-  //           country: 'USA',
-  //           zipCode: '12345',
-  //         },
-  //       },
-  //     });
+  const handlePlaceOrder = async () => {
+    const Jwttoken= localStorage.getItem('userToken');
+    try {
+    //  const productIds = cart.data.map((item) => item.product._id);
+ //  const id=cart.data._id
+   //   const quantity=cart.results;
+      console.log("productids",productIds)
+      console.log("Jwt",JwtToken)
+      const response = await fetch('https://academics.newtonschool.co/api/v1/ecommerce/order/convertCartToOrder', {
+        method:'POST',
+        headers: {
+          'Authorization': `Bearer ${Jwttoken}`,
+          'Content-Type': 'application/json',
+          'projectID': 'f104bi07c490',
+         
+        },
+          body: JSON.stringify({
+          "productId": "66d0ccf1a52bc1b7a2ca5480",  
+          "quantity": 1,  
+          "addressType": "HOME",
+          "address": {
+            "street": "123 Main St",
+            "city": "Anytown",
+            "state": "CA",
+            "country": "USA",
+            "zipCode": "12345",
+          },
+        
+      }),
+      });
 
-  //     if (response.ok) {
-  //       // Handle success, e.g., navigate to a success page
-  //       console.log('Order placed successfully!');
-  //     } else {
-  //       // Handle error
-  //       console.log('Error placing order');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error placing order:', error);
-  //   }
-  // };
+      if (response.ok) {
+        // Handle success, e.g., navigate to a success page
+           console.log(response);
+
+        console.log('Order placed successfully!');
+      } else {
+        // Handle error
+        console.log('Error placing order');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
+
+    try{
+      const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
+        // mode:'no-cors',
+        method:'DELETE',
+headers:{
+  'Authorization': `Bearer ${JwtToken}`,
+  'projectID': 'f104bi07c490',
+
+}
+
+      });
+        console.log(response)
+        const data= await response.json();
+        console.log(data);
+       if(response.ok){
+
+        console.log("Cart Cleared")
+      
+       }
+
+    }
+  catch(error){
+        console.log(error);
+  }
+
+  setTimeout(()=>{
+    navigate("/");
+  },5000)
+  };
 
 console.log("cartItems",cartItems)
 console.log("isformvalid",isFormValid)
+console.log("cart",cart)
+console.log("token",JwtToken)
+console.log("id",id)
+console.log("result",result)
   return (
     <React.Fragment>
       <CssBaseline />
@@ -208,7 +255,18 @@ console.log("isformvalid",isFormValid)
             )}
          <Button
           variant="contained"
-          onClick={handleNext}
+        //  onClick={handleNext}
+        onClick={() => {
+          if (activeStep === steps.length - 1) {
+            // If on the last step, call both handleNext and handlePlaceOrder
+            handleNext();
+            handlePlaceOrder();
+          } else {
+            // Otherwise, just call handleNext
+            handleNext();
+          }
+        }}
+          
           disabled={!isFormValid}  // Disable the button if the form is not valid
           sx={{ mt: 3, ml: 1 }}
           >

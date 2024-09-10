@@ -22,6 +22,7 @@ const Addtocart = () => {
     const[totalprice,setTotalprice]=useState(0);
     const [shippingCost, setShippingCost] = useState(10);
     const[totalaftershipping,setTotalaftershipping]= useState(0);
+   // const[emptycart,setemptycart]=useState(false);
     const navigate=useNavigate()
     const JwtToken=localStorage.getItem('userToken');
     
@@ -104,19 +105,32 @@ const Addtocart = () => {
         //adding to wishlist
 
        async function wishlist(id){
+        console.log(id);
+        console.log(JwtToken)
         try{
         
-         const result = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/wishlist/${id}`,{
+         const result = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/wishlist`,{
            method:'PATCH',
            headers:{
             'Authorization': `Bearer ${JwtToken}`,
             'projectID': 'f104bi07c490',
-           }
            
-          //console.log(id);
-         })
+            
+           },
+
+           body: JSON.stringify({
+            "productId": id
+          }),
+           
+         // console.log(id);
+         });
+         if(result.ok){
+
+         
             console.log(id);
             console.log(result);
+           alert('Item added to wishlist sucessfully')
+         }
         }
         catch(error){
           console.log(error);
@@ -125,8 +139,8 @@ const Addtocart = () => {
         // remove all items  
         const removeAllitems=async()=>{
               try{
-                const response = await fetch(`http://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
-                  mode:'no-cors',
+                const response = await fetch(`https://academics.newtonschool.co/api/v1/ecommerce/cart/`,{
+                  // mode:'no-cors',
                   method:'DELETE',
           headers:{
             'Authorization': `Bearer ${JwtToken}`,
@@ -140,6 +154,7 @@ const Addtocart = () => {
                   console.log(data);
                 if(response.ok){
                   alert("cart empty add products ");
+                  fetchcartproducts();
                 }
 
               }
@@ -156,10 +171,11 @@ const Addtocart = () => {
 
   return (
     <>
+     <h2 className=' font-bold text-2xl flex items-center justify-center'>Your Cart</h2>
     <div className=' w-full'>
     {Array.isArray(selectedProduct) && selectedProduct.length > 0 && (
     <div className=' flex justify-end mt-4'>
-    <Button variant="primary" className=' w-40 h-10' onClick={()=>removeAllitems()}>Clear Cart</Button>
+    <Button variant="primary" className=' w-40 h-10 m-3' onClick={()=>removeAllitems()}>Clear Cart</Button>
 
     </div>
     )}
@@ -194,7 +210,13 @@ const Addtocart = () => {
                 </div>
               ))
             ) : (
+              <>
               <img src={emptycart}></img>
+              <div className=' flex gap-2 flex-col'>
+              <h1 className=' font-bold text-white '>No items added yet</h1>
+           <Link to={"/"}><Button variant="primary" className=' w-40 h-10  '>Home page</Button></Link>
+           </div>
+              </>
             )}
           </div>
           
@@ -256,7 +278,7 @@ const Addtocart = () => {
                         {prod.product.name}
                       </Card.Text>
                       <div className=' flex flex-row gap-2 m-3 '>
-                        <Button variant="primary" className=' w-40 h-10' onClick={()=>alert("Wishlist feature Coming soon")}>Add to wishlist</Button>
+                        <Button variant="primary" className=' w-40 h-10' onClick={()=>wishlist(prod.product._id)}>Add to wishlist</Button>
                         <Button variant="primary" className=' w-40 h-10' onClick={() => removeItem(prod.product._id)}>Remove</Button>
                       </div>
                     </div>

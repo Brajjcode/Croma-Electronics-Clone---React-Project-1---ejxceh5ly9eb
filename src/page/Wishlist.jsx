@@ -2,7 +2,9 @@ import React from 'react'
 
 const Wishlist = () => {
   return (
-    <div>
+    <div className=' text-white'>
+
+      This is wishlist section.
         
       
     </div>

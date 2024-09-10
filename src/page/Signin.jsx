@@ -14,6 +14,9 @@ import Container from '@mui/material/Container';
 import {Link , useNavigate}from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Toast from 'react-bootstrap/Toast';
+import { useState } from 'react';
+
 function Copyright(props) {
 
 
@@ -45,26 +48,22 @@ const darkTheme = createTheme({
 export default function SignIn() {
 
   const navigate= useNavigate();
-
+   const [signin,setsignin]=useState(false)
+   const[incorrect,setIncorrect]=useState(false)
   React.useEffect(()=>{
     const jwtToken =  localStorage.getItem('token');
     if(jwtToken) {
         navigate('/')
     }
 } , [])
+
+setTimeout(()=>{
+     setsignin(false)
+     setIncorrect(false)
+},5000)
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
     
-
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
-
-   //const storedUserdata= JSON.parse(localStorage.getItem('userInfo'))||{};
-
-   //if(event.currentTarget.email.value===storedUserdata.email && event.currentTarget.password.value===storedUserdata.password){
       try{
         const response = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
           method: 'POST',
@@ -83,13 +82,17 @@ export default function SignIn() {
           const responseData= await response.json();
        //   console.log("response data=>",responseData)
           localStorage.setItem('userToken', responseData.token);
-          localStorage.setItem('userdata',JSON.stringify(responseData));
-          alert("logged in sucessfully");
+          localStorage.setItem('userdata',JSON.stringify(responseData.data.user));
+        //  alert("logged in sucessfully");    
+        setsignin(true)     
            navigate("/", { state: { userloggedin: true } });
+           window.location.reload()
         }
 
         else{
-          alert('Incorrect username or password');
+         // alert('Incorrect username or password');
+         setIncorrect(true)
+         
         }
       }
       catch(error){ 
@@ -105,7 +108,41 @@ export default function SignIn() {
 
 
   return (
+    <>
     <ThemeProvider theme={darkTheme}>
+     
+{
+  signin &&(
+    <>
+    <Toast variant="dark">
+      <Toast.Header>
+        <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+        <strong className="me-auto">Signin</strong>
+        
+      </Toast.Header>
+      <Toast.Body>Signedin Sucessfully.</Toast.Body>
+    </Toast>
+
+    </>
+  )
+}
+{
+    incorrect &&(
+      <>
+      <div className=' flex items-center justify-center pt-3'>
+      <Toast bg='secondary' style={{ zIndex: 1000 }} >
+      <Toast.Header>
+        <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+        <strong className="me-auto">Incorrect</strong>
+        
+      </Toast.Header>
+      <Toast.Body>Incorrect username or Password.</Toast.Body>
+    </Toast>
+    </div>
+      </>
+    )
+  }
+     
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -143,10 +180,10 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -154,17 +191,17 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               
             >
-              Sign In
+              Log in
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                {/* <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
+                </Link> */}
               </Grid>
               <Grid item>
-                <Link to={`/signup`} variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link to={`/signup`} variant="body2" >
+                  {"Don't have an account?" } <span className=' text-blue-600'>Sign up</span>
                 </Link>
               </Grid>
             </Grid>
@@ -173,4 +210,5 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </>
   )};

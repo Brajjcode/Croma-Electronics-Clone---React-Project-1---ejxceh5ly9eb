@@ -11,23 +11,12 @@ import {FaAlignJustify,FaUser } from "react-icons/fa6";
 import { createTheme } from '@mui/material/styles';
 import { green, orange } from '@mui/material/colors';
 import { ThemeProvider } from 'styled-components';
+import { Nav, NavDropdown } from 'react-bootstrap';
+import { RxDropdownMenu } from "react-icons/rx";
+import { useCallback } from 'react';
 
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 50,
-//     },
-//   },
-// };
 
-function getStyles(theme, name, personName) {
-  return {
-    fontWeight: personName.indexOf(name) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
-  };
-}
+
 
 const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
   const theme = useTheme();
@@ -47,12 +36,12 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
 
         // Check if the data is an array or an object with an array property
         const categoryArray = Array.isArray(data) ? data : data.data || [];
-        //const uppercasedCategories = categoryArray.map(category => category.toUpperCase());
+    
 
         setOptions((prevOptions)=>{
           console.log("options", prevOptions)
          return categoryArray;
-         //return uppercasedCategories;
+      
         });
         
       } catch (error) {
@@ -63,57 +52,74 @@ const DynamicSelect = ({ apiEndpoint, projectId,onSelectCategory }) => {
     fetchData();
   }, [apiEndpoint, projectId]);
 
-  const handleChange = (event) => {
-    const { target: { value } } = event;
-    setSelectedOptions(value);
+  // const handleChange = (eventKey) => {
+  // //   const { target: { value } } = event;
+  // //   setSelectedOptions(value);
     
-  onSelectCategory(value); // Pass the selected category to the parent component
-  };
-  const innerTheme = createTheme({
-    palette: {
-      primary: {
-        main: green[500],
-      },
-    },
-  });
+  // // onSelectCategory(value); // Pass the selected category to the parent component
+  // setSelectedOptions(eventKey);
+  // onSelectCategory(eventKey);
+  // };
+  const handleChange = useCallback((eventKey) => {
+    setSelectedOptions(eventKey);
+    // Assuming onSelectCategory is passed as a prop or defined in the same component
+    onSelectCategory(eventKey);
+  }, []);
+  
 
   return (
-    <div>
-       <FormControl sx={{ m: 1, Width:5}} size="small">
-      <InputLabel className=' text-white text-3xl' ><FaAlignJustify/></InputLabel>
-      
- 
-      <Select
-        labelId="demo-select-small-label"
-        id="demo-select-small"
-        value={selectedOptions}
-        label="Age"
-        onChange={handleChange}
-        input={<OutlinedInput />}
-       variant='h6'
-       // MenuProps={MenuProps}
-       // inputProps={{ 'aria-label': 'Without label' }}
-      >
+    <>
+     <div>
+      {/* <FormControl sx={{ m: 1, width: 200 }} size="small">
+        <InputLabel className='text-white text-3xl'>
+          <FaAlignJustify />
+        </InputLabel>
+
+        <Select
+          labelId="demo-select-small-label"
+          id="demo-select-small"
+          value={selectedOptions}
+          label="Category"
+          onChange={handleChange}
+          input={<OutlinedInput />}
+          variant="outlined"
+        >
           {options.map((option) => (
-         <ThemeProvider theme={innerTheme}>
-            <MenuItem
-              key={option}
-              value={option}
-             style={getStyles(theme, option, selectedOptions)}
-              component={Link}
-              to={`/dropdown/${option}`}  
-            >
-              {option}
-            </MenuItem>
-            
-          </ThemeProvider>
-            
+            <ThemeProvider theme={innerTheme} key={option}>
+              <MenuItem
+                value={option}
+                style={getStyles(theme, option, selectedOptions)}
+                component={Link}
+                to={`/dropdown/${option}`}
+              >
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </MenuItem>
+            </ThemeProvider>
           ))}
-        </Select> 
-        
-      </FormControl>
-      
+        </Select>
+      </FormControl> */}
+
+<div style={{ marginTop: '20px' }}> {/* Adjust this value as needed */}
+      <NavDropdown
+        id="nav-dropdown-dark-example"
+        title={<span><FaAlignJustify /> </span>}
+        menuVariant="dark"
+        onSelect={()=>handleChange}
+      >
+        {options.map((option) => (
+          <NavDropdown.Item
+            key={option}
+            eventKey={option}
+            as={Link}
+            to={`/dropdown/${option}`}
+          >
+            {option.charAt(0).toUpperCase() + option.slice(1)}
+          </NavDropdown.Item>
+        ))}
+      </NavDropdown>
     </div>
+    </div>
+    </>
   );
 };
 

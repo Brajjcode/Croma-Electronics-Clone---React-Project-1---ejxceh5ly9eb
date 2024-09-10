@@ -27,6 +27,7 @@ import highlights3 from "../components/Assets/highlights3_720.png";
 import highlights4 from "../components/Assets/highlights4_720.png";
 import highlights5 from "../components/Assets/highlights5_720.png";
 import highlights6 from "../components/Assets/highlights6_720.png";
+import Footer from '../components/Footer/Footer'
 import Loader from '../components/imageurls/Loader'
 //import  {Loader} from 'rsuite'
 
@@ -236,8 +237,9 @@ var settings = {
    </div>
 </section>
    </Box>
-  
+
     </div>
+    <Footer/>
     </>
   )
 }
